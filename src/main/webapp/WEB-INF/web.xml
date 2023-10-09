@@ -28,4 +28,16 @@
         <url-pattern>*.ftl</url-pattern>
     </servlet-mapping>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>FreeMarker MVC Views</web-resource-name>
+            <url-pattern>*.ftl</url-pattern>
+            <url-pattern>*.ftlh</url-pattern>
+            <url-pattern>*.ftlx</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <!-- Nobody is allowed to visit these directly. -->
+        </auth-constraint>
+    </security-constraint>
+
 </web-app>

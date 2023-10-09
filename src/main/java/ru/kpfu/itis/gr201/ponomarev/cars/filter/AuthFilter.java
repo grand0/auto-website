@@ -1,34 +1,53 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.filter;
 
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.UserDao;
+import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
+import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
+import ru.kpfu.itis.gr201.ponomarev.cars.service.impl.UserServiceImpl;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebFilter(filterName = "authFilter", urlPatterns = "/*")
-public class AuthFilter implements Filter {
+public class AuthFilter extends HttpFilter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
+        super.init(filterConfig);
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpReq = (HttpServletRequest) request;
-        HttpServletResponse httpResp = (HttpServletResponse) response;
-        String uri = httpReq.getRequestURI();
-        HttpSession session = httpReq.getSession(false);
-        if (session == null && !uri.contains("auth")) {
-            httpResp.sendRedirect("/auth");
-        } else {
-            chain.doFilter(request, response);
+    public void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
+        UserDao userDao = new UserDao();
+        UserService userService = new UserServiceImpl(userDao);
+
+        if (!userService.isAuthed(req, resp)) {
+            Cookie[] cookies = req.getCookies();
+            if (cookies != null) {
+                String login = null;
+                String password = null;
+                for (Cookie c : cookies) {
+                    if (c.getName().equalsIgnoreCase("userLogin")) {
+                        login = c.getValue();
+                    } else if (c.getName().equalsIgnoreCase("userPassword")) {
+                        password = c.getValue();
+                    }
+                }
+                if (login != null && password != null) {
+                    User user = userDao.getByLoginAndPasswordHash(login, password);
+                    if (user != null) {
+                        userService.auth(user, false, req, resp);
+                    }
+                }
+            }
         }
+
+        chain.doFilter(req, resp);
     }
 
     @Override
     public void destroy() {
-        Filter.super.destroy();
+        super.destroy();
     }
 }

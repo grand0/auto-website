@@ -5,20 +5,27 @@
 <#macro title>Login</#macro>
 
 <#macro content>
+    <h1 class="page-title">Log in</h1>
+
     <#if unauthorized??>
-        <p style="color: red">Incorrect login and/or password</p>
+        <p class="error">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Incorrect login and/or password
+        </p>
     </#if>
     <form action="auth" method="post">
         <label>
-            Login
+            <span>Login</span>
             <input type="text" name="login" required />
         </label>
-        <br>
         <label>
-            Password
+            <span>Password</span>
             <input type="password" name="password" required />
         </label>
-        <br>
-        <input type="submit" value="Login" />
+        <label>
+            <span>Remember me</span>
+            <input type="checkbox" name="remember">
+        </label>
+        <input class="btn accent" type="submit" value="Log in" />
     </form>
 </#macro>

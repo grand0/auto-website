@@ -4,10 +4,10 @@
 
 <#macro content>
 
-    <#if username??>
+    <#if user??>
         <p>Website content will be here.</p>
     <#else>
-        <p><b>Login</b> to get access to all the features of website.</p>
+        <p><b>Log in</b> to get access to all the features of website.</p>
     </#if>
 
 </#macro>

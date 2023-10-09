@@ -7,11 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "homeServlet", urlPatterns = "/")
+@WebServlet(name = "homeServlet", urlPatterns = "")
 public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("username", req.getSession().getAttribute("username"));
+        if (req.getSession(false) != null) {
+            req.setAttribute("username", req.getSession().getAttribute("username"));
+        }
         req.getRequestDispatcher("index.ftl").forward(req, resp);
     }
 }
