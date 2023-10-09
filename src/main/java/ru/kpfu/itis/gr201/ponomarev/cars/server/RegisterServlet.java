@@ -39,32 +39,45 @@ public class RegisterServlet extends HttpServlet {
             remember = "off";
         }
 
+        User user = new User(
+                firstName,
+                lastName,
+                email,
+                null, // TODO: avatar url
+                login,
+                password
+        );
         if (password.equals(confirmPassword)) {
-            User user = new User(
-                    firstName,
-                    lastName,
-                    email,
-                    null, // TODO: avatar url
-                    login,
-                    password
-            );
-
             try {
                 userService.save(user);
                 userService.auth(user, remember.equalsIgnoreCase("on"), req, resp);
                 resp.sendRedirect(req.getContextPath() + "/");
-            } catch (EmailAlreadyRegisteredException e) {
-                req.setAttribute("email_not_unique", e.getEmail());
-                req.getRequestDispatcher("register.ftl").forward(req, resp);
-            } catch (LoginAlreadyTakenException e) {
-                req.setAttribute("login_not_unique", e.getLogin());
-                req.getRequestDispatcher("register.ftl").forward(req, resp);
             } catch (RegistrationException e) {
-                req.setAttribute("unknown_error", true);
+                if (e instanceof EmailAlreadyRegisteredException) {
+                    req.setAttribute(
+                            "email_not_unique",
+                            ((EmailAlreadyRegisteredException) e).getEmail()
+                    );
+                } else if (e instanceof LoginAlreadyTakenException) {
+                    req.setAttribute(
+                            "login_not_unique",
+                            ((LoginAlreadyTakenException) e).getLogin()
+                    );
+                } else {
+                    req.setAttribute("unknown_error", true);
+                }
+                req.setAttribute("past_first_name", user.getFirstName());
+                req.setAttribute("past_last_name", user.getLastName());
+                req.setAttribute("past_email", user.getEmail());
+                req.setAttribute("past_login", user.getLogin());
                 req.getRequestDispatcher("register.ftl").forward(req, resp);
             }
         } else {
             req.setAttribute("password_not_confirmed", true);
+            req.setAttribute("past_first_name", user.getFirstName());
+            req.setAttribute("past_last_name", user.getLastName());
+            req.setAttribute("past_email", user.getEmail());
+            req.setAttribute("past_login", user.getLogin());
             req.getRequestDispatcher("register.ftl").forward(req, resp);
         }
     }

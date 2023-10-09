@@ -44,19 +44,19 @@
 <#--        </label>-->
         <label>
             <span>First name</span>
-            <input type="text" name="firstName" required />
+            <input type="text" name="firstName" value="${past_first_name!}" required />
         </label>
         <label>
             <span>Last name</span>
-            <input type="text" name="lastName" required />
+            <input type="text" name="lastName" value="${past_last_name!}" required />
         </label>
         <label>
             <span>E-mail</span>
-            <input type="email" name="email" required />
+            <input type="email" name="email" value="${past_email!}" required />
         </label>
         <label>
             <span>Login</span>
-            <input type="text" name="login" required />
+            <input type="text" name="login" value="${past_login!}" required />
         </label>
         <label>
             <span>Password</span>

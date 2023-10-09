@@ -55,6 +55,7 @@ public class AuthServlet extends HttpServlet {
             }
         }
         req.setAttribute("unauthorized", true);
+        req.setAttribute("past_login", login);
         req.getRequestDispatcher("auth.ftl").forward(req, resp);
     }
 }

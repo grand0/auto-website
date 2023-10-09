@@ -16,7 +16,7 @@
     <form action="auth" method="post">
         <label>
             <span>Login</span>
-            <input type="text" name="login" required />
+            <input type="text" name="login" value="${past_login!}" required />
         </label>
         <label>
             <span>Password</span>
