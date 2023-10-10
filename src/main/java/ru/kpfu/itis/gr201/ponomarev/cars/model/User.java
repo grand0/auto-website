@@ -101,14 +101,11 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", avatarUrl='" + avatarUrl + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(firstName);
+        if (lastName != null) {
+            sb.append(" ").append(lastName);
+        }
+        return sb.toString();
     }
 }

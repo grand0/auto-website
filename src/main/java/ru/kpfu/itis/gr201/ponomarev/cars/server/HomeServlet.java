@@ -11,9 +11,6 @@ import java.io.IOException;
 public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getSession(false) != null) {
-            req.setAttribute("username", req.getSession().getAttribute("username"));
-        }
         req.getRequestDispatcher("index.ftl").forward(req, resp);
     }
 }

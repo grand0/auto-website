@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.Dao;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.EmailAlreadyRegisteredException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.LoginAlreadyTakenException;
-import ru.kpfu.itis.gr201.ponomarev.cars.exception.RegistrationException;
+import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserSaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.DatabaseConnectionUtil;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.PasswordUtil;
@@ -69,7 +69,7 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public void save(User user) throws RegistrationException {
+    public void save(User user) throws UserSaveException {
         try {
             String sql = "INSERT INTO Users(first_name, last_name, email, avatar_url, login, password) VALUES (?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -87,7 +87,7 @@ public class UserDao implements Dao<User> {
                 throw new LoginAlreadyTakenException(user.getLogin());
             } else {
                 LoggerFactory.getLogger(getClass()).error(e.toString());
-                throw new RegistrationException(e);
+                throw new UserSaveException(e);
             }
         }
     }
@@ -122,6 +122,37 @@ public class UserDao implements Dao<User> {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void update(int id, User user) throws UserSaveException {
+        try {
+            PreparedStatement statement;
+            if (user.getPassword() == null) {
+                String sql = "UPDATE Users SET (first_name, last_name, email, avatar_url) = (?, ?, ?, ?) WHERE id = ?";
+                statement = connection.prepareStatement(sql);
+                statement.setInt(5, id);
+            } else {
+                String sql = "UPDATE Users SET (first_name, last_name, email, avatar_url, password) = (?, ?, ?, ?, ?) WHERE id = ?";
+                statement = connection.prepareStatement(sql);
+                statement.setString(5, user.getPassword());
+                statement.setInt(6, id);
+            }
+            statement.setString(1, user.getFirstName());
+            statement.setString(2, user.getLastName());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getAvatarUrl());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            if (e.getMessage().contains("email_unique")) {
+                throw new EmailAlreadyRegisteredException(user.getEmail());
+            } else if (e.getMessage().contains("login_unique")) {
+                throw new LoginAlreadyTakenException(user.getLogin());
+            } else {
+                LoggerFactory.getLogger(getClass()).error(e.toString());
+                throw new UserSaveException(e);
+            }
         }
     }
 }

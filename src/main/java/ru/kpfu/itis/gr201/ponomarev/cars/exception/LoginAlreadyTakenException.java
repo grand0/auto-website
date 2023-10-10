@@ -1,6 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.exception;
 
-public class LoginAlreadyTakenException extends RegistrationException {
+public class LoginAlreadyTakenException extends UserSaveException {
     private final String login;
 
     public LoginAlreadyTakenException() {

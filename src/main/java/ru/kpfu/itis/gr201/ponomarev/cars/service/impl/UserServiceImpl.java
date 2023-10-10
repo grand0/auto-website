@@ -2,7 +2,8 @@ package ru.kpfu.itis.gr201.ponomarev.cars.service.impl;
 
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.UserDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.UserDto;
-import ru.kpfu.itis.gr201.ponomarev.cars.exception.RegistrationException;
+import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserSaveException;
+import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserNotAuthenticatedException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.PasswordUtil;
@@ -46,22 +47,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) throws RegistrationException {
+    public void save(User user) throws UserSaveException {
         user.setPassword(PasswordUtil.encrypt(user.getPassword()));
         userDao.save(user);
     }
 
     @Override
     public void auth(User user, boolean writeCookie, HttpServletRequest req, HttpServletResponse resp) {
-        req.getSession().setAttribute(
-                "user",
-                new UserDto(
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getEmail(),
-                        user.getAvatarUrl()
-                )
-        );
+//        req.getSession().setAttribute(
+//                "user",
+//                new UserDto(
+//                        user.getFirstName(),
+//                        user.getLastName(),
+//                        user.getEmail(),
+//                        user.getAvatarUrl()
+//                )
+//        );
+
+        req.getSession().setAttribute("user", user);
 
         if (writeCookie) {
             Cookie loginCookie = new Cookie("userLogin", user.getLogin());
@@ -92,5 +95,21 @@ public class UserServiceImpl implements UserService {
         passwordCookie.setMaxAge(0);
         resp.addCookie(loginCookie);
         resp.addCookie(passwordCookie);
+    }
+
+    @Override
+    public void changeUserDetails(User newUser, HttpServletRequest req, HttpServletResponse resp) throws UserNotAuthenticatedException, UserSaveException {
+        if (!isAuthed(req, resp)) {
+            throw new UserNotAuthenticatedException();
+        }
+
+        if (newUser.getPassword() != null) {
+            newUser.setPassword(PasswordUtil.encrypt(newUser.getPassword()));
+        }
+
+        User oldUser = (User) req.getSession().getAttribute("user");
+        userDao.update(oldUser.getId(), newUser);
+        User updatedUser = userDao.get(oldUser.getId());
+        auth(updatedUser, req.getCookies() != null, req, resp);
     }
 }

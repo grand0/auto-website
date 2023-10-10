@@ -1,6 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.exception;
 
-public class EmailAlreadyRegisteredException extends RegistrationException {
+public class EmailAlreadyRegisteredException extends UserSaveException {
     private final String email;
 
     public EmailAlreadyRegisteredException() {

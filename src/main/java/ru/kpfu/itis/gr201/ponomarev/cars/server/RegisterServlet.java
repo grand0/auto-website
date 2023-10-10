@@ -3,7 +3,7 @@ package ru.kpfu.itis.gr201.ponomarev.cars.server;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.UserDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.EmailAlreadyRegisteredException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.LoginAlreadyTakenException;
-import ru.kpfu.itis.gr201.ponomarev.cars.exception.RegistrationException;
+import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserSaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.impl.UserServiceImpl;
@@ -52,7 +52,7 @@ public class RegisterServlet extends HttpServlet {
                 userService.save(user);
                 userService.auth(user, remember.equalsIgnoreCase("on"), req, resp);
                 resp.sendRedirect(req.getContextPath() + "/");
-            } catch (RegistrationException e) {
+            } catch (UserSaveException e) {
                 if (e instanceof EmailAlreadyRegisteredException) {
                     req.setAttribute(
                             "email_not_unique",

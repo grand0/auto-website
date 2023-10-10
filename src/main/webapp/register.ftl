@@ -10,7 +10,7 @@
     <#if password_not_confirmed??>
         <p class="error">
             <i class="fa-solid fa-triangle-exclamation"></i>
-            Password was not confirmed
+            Password was not confirmed.
         </p>
     </#if>
 

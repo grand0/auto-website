@@ -2,6 +2,12 @@
     font-family: Montserrat, sans-serif;
 }
 
+.content {
+    width: fit-content;
+    margin: 0 auto;
+    text-align: center;
+}
+
 .btn {
     padding: 10px 20px;
     border: #CC0000 solid 1px;
@@ -110,6 +116,12 @@ form label input[type=checkbox] {
     accent-color: #FF0000;
 }
 
+form a.btn {
+    display: block;
+    margin: 10px auto;
+    width: fit-content  ;
+}
+
 .file-chooser-btn {
     display: block;
     width: fit-content;
@@ -124,4 +136,9 @@ form label input[type=checkbox] {
 .error {
     text-align: center;
     color: #FF0000;
+}
+
+.success {
+    text-align: center;
+    color: #00FF44;
 }
