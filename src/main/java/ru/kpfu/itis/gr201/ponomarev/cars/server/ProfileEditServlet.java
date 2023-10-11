@@ -9,6 +9,7 @@ import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.impl.UserServiceImpl;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.CloudinaryUtil;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.PasswordUtil;
+import ru.kpfu.itis.gr201.ponomarev.cars.util.ValidateUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -35,36 +36,53 @@ public class ProfileEditServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String newAvatarUrl = null;
-        Part avatarPart;
+        boolean formValid = true;
+
+        Part avatarPart = null;
         try {
             avatarPart = req.getPart("avatar");
         } catch (IllegalStateException e) {
             req.setAttribute("avatar_too_big", true);
-            showPage(req, resp);
-            return;
+            formValid = false;
         }
 
         if (avatarPart != null) {
-            if (!avatarPart.getContentType().startsWith("image/")) {
+            if (avatarPart.getContentType().equals("application/octet-stream")) {
+                avatarPart = null;
+            } else if (!avatarPart.getContentType().startsWith("image/")) {
                 req.setAttribute("avatar_unsupported_format", true);
-                showPage(req, resp);
-                return;
+                formValid = false;
             }
-            newAvatarUrl = CloudinaryUtil.uploadPart(avatarPart);
         }
 
         User oldUser = (User) req.getSession().getAttribute("user");
+
         String email = req.getParameter("email");
+        if (!ValidateUtil.validateEmail(email)) {
+            req.setAttribute("email_invalid", true);
+            formValid = false;
+        }
+
         String oldPassword = req.getParameter("oldPassword");
+
         String newPassword = req.getParameter("newPassword");
+        if (newPassword != null && !newPassword.isEmpty() && !ValidateUtil.validatePassword(newPassword)) {
+            req.setAttribute("password_invalid", true);
+            formValid = false;
+        }
+
         String confirmPassword = req.getParameter("confirmPassword");
+
+        if (!formValid) {
+            showPage(req, resp);
+            return;
+        }
 
         User newUser = new User(
                 oldUser.getFirstName(),
                 oldUser.getLastName(),
                 oldUser.getEmail(),
-                newAvatarUrl == null ? oldUser.getAvatarUrl() : newAvatarUrl,
+                oldUser.getAvatarUrl(),
                 oldUser.getLogin(),
                 null
         );
@@ -82,6 +100,12 @@ public class ProfileEditServlet extends HttpServlet {
                 newUser.setPassword(newPassword);
             }
         }
+
+        if (avatarPart != null) {
+            String newAvatarUrl = CloudinaryUtil.uploadPart(avatarPart);
+            newUser.setAvatarUrl(newAvatarUrl);
+        }
+
         newUser.setEmail(email);
 
         UserDao userDao = new UserDao();

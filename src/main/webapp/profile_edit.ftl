@@ -19,6 +19,20 @@
         </p>
     </#if>
 
+    <#if email_invalid??>
+        <p class="alert alert-danger m-3">
+            <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+            Email is invalid.
+        </p>
+    </#if>
+
+    <#if password_invalid??>
+        <p class="alert alert-danger m-3">
+            <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+            New password is invalid.
+        </p>
+    </#if>
+
     <#if email_not_unique??>
         <p class="alert alert-danger m-3">
             <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
@@ -70,11 +84,17 @@
         </div>
         <div class="mb-3">
             <label for="new-password-input" class="form-label">New password</label>
-            <input type="password" class="form-control" id="new-password-input" name="newPassword">
+            <input type="password" class="form-control" id="new-password-input" name="newPassword" aria-describedby="passwordHelp">
+            <div id="passwordHelp" class="form-text">
+                Length from 6 to 64 symbols. You can use English letters, digits and special symbols.
+            </div>
         </div>
         <div class="mb-3">
             <label for="confirm-password-input" class="form-label">Confirm password</label>
-            <input type="password" class="form-control" id="confirm-password-input" name="confirmPassword">
+            <input type="password" class="form-control" id="confirm-password-input" name="confirmPassword" aria-describedby="confirmPasswordHelp">
+            <div id="confirmPasswordHelp" class="form-text">
+                Retype your new password.
+            </div>
         </div>
         <button type="submit" class="btn btn-primary">Save changes</button>
         <a class="btn btn-outline-secondary" href="${contextPath}/profile">Cancel</a>
