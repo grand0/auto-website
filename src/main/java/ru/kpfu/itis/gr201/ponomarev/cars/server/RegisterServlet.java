@@ -8,6 +8,7 @@ import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.impl.UserServiceImpl;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.CloudinaryUtil;
+import ru.kpfu.itis.gr201.ponomarev.cars.util.ValidateUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -32,47 +33,77 @@ public class RegisterServlet extends HttpServlet {
         final UserDao userDao = new UserDao();
         final UserService userService = new UserServiceImpl(userDao);
 
-        String avatarUrl = null;
-        Part avatarPart;
+        boolean formValid = true;
+
+        Part avatarPart = null;
         try {
             avatarPart = req.getPart("avatar");
         } catch (IllegalStateException e) {
             req.setAttribute("avatar_too_big", true);
-            restoreInputData(req);
-            req.getRequestDispatcher("register.ftl").forward(req, resp);
-            return;
+            formValid = false;
         }
 
         if (avatarPart != null) {
-            if (!avatarPart.getContentType().startsWith("image/")) {
+            if (avatarPart.getContentType().equals("application/octet-stream")) {
+                avatarPart = null;
+            } else if (!avatarPart.getContentType().startsWith("image/")) {
                 req.setAttribute("avatar_unsupported_format", true);
-                restoreInputData(req);
-                req.getRequestDispatcher("register.ftl").forward(req, resp);
-                return;
+                formValid = false;
             }
-            avatarUrl = CloudinaryUtil.uploadPart(avatarPart);
         }
 
         String firstName = req.getParameter("firstName");
+        if (ValidateUtil.validateName(firstName)) {
+            req.setAttribute("first_name_invalid", true);
+            formValid = false;
+        }
+
         String lastName = req.getParameter("lastName");
+        if (ValidateUtil.validateName(lastName)) {
+            req.setAttribute("last_name_invalid", true);
+            formValid = false;
+        }
+
         String email = req.getParameter("email");
+        if (ValidateUtil.validateEmail(email)) {
+            req.setAttribute("email_invalid", true);
+            formValid = false;
+        }
+
         String login = req.getParameter("login");
+        if (ValidateUtil.validateLogin(login)) {
+            req.setAttribute("login_invalid", true);
+            formValid = false;
+        }
+
         String password = req.getParameter("password");
+        if (ValidateUtil.validatePassword(password)) {
+            req.setAttribute("password_invalid", true);
+            formValid = false;
+        }
+
         String confirmPassword = req.getParameter("confirmPassword");
+
         String remember = req.getParameter("remember");
         if (remember == null) {
             remember = "off";
         }
 
-        User user = new User(
+        if (!formValid) {
+            showPage(req, resp);
+        } else if (password.equals(confirmPassword)) {
+            String avatarUrl = null;
+            if (avatarPart != null) {
+                avatarUrl = CloudinaryUtil.uploadPart(avatarPart);
+            }
+            User user = new User(
                 firstName,
                 lastName,
                 email,
                 avatarUrl,
                 login,
                 password
-        );
-        if (password.equals(confirmPassword)) {
+            );
             try {
                 userService.save(user);
                 userService.auth(user, remember.equalsIgnoreCase("on"), req, resp);
@@ -91,20 +122,19 @@ public class RegisterServlet extends HttpServlet {
                 } else {
                     req.setAttribute("unknown_error", true);
                 }
-                restoreInputData(req);
-                req.getRequestDispatcher("register.ftl").forward(req, resp);
+                showPage(req, resp);
             }
         } else {
             req.setAttribute("password_not_confirmed", true);
-            restoreInputData(req);
-            req.getRequestDispatcher("register.ftl").forward(req, resp);
+            showPage(req, resp);
         }
     }
 
-    private void restoreInputData(HttpServletRequest req) {
+    private void showPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("past_first_name", req.getParameter("firstName"));
         req.setAttribute("past_last_name", req.getParameter("lastName"));
         req.setAttribute("past_email", req.getParameter("email"));
         req.setAttribute("past_login", req.getParameter("login"));
+        req.getRequestDispatcher("register.ftl").forward(req, resp);
     }
 }
