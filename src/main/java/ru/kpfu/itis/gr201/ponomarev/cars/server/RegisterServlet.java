@@ -7,15 +7,19 @@ import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserSaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.impl.UserServiceImpl;
+import ru.kpfu.itis.gr201.ponomarev.cars.util.CloudinaryUtil;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
 
 @WebServlet(name = "registerServlet", urlPatterns = "/register")
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 10 * 1024 * 1024)
 public class RegisterServlet extends HttpServlet {
 
     @Override
@@ -27,6 +31,27 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final UserDao userDao = new UserDao();
         final UserService userService = new UserServiceImpl(userDao);
+
+        String avatarUrl = null;
+        Part avatarPart;
+        try {
+            avatarPart = req.getPart("avatar");
+        } catch (IllegalStateException e) {
+            req.setAttribute("avatar_too_big", true);
+            restoreInputData(req);
+            req.getRequestDispatcher("register.ftl").forward(req, resp);
+            return;
+        }
+
+        if (avatarPart != null) {
+            if (!avatarPart.getContentType().startsWith("image/")) {
+                req.setAttribute("avatar_unsupported_format", true);
+                restoreInputData(req);
+                req.getRequestDispatcher("register.ftl").forward(req, resp);
+                return;
+            }
+            avatarUrl = CloudinaryUtil.uploadPart(avatarPart);
+        }
 
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
@@ -43,7 +68,7 @@ public class RegisterServlet extends HttpServlet {
                 firstName,
                 lastName,
                 email,
-                null, // TODO: avatar url
+                avatarUrl,
                 login,
                 password
         );
@@ -66,19 +91,20 @@ public class RegisterServlet extends HttpServlet {
                 } else {
                     req.setAttribute("unknown_error", true);
                 }
-                req.setAttribute("past_first_name", user.getFirstName());
-                req.setAttribute("past_last_name", user.getLastName());
-                req.setAttribute("past_email", user.getEmail());
-                req.setAttribute("past_login", user.getLogin());
+                restoreInputData(req);
                 req.getRequestDispatcher("register.ftl").forward(req, resp);
             }
         } else {
             req.setAttribute("password_not_confirmed", true);
-            req.setAttribute("past_first_name", user.getFirstName());
-            req.setAttribute("past_last_name", user.getLastName());
-            req.setAttribute("past_email", user.getEmail());
-            req.setAttribute("past_login", user.getLogin());
+            restoreInputData(req);
             req.getRequestDispatcher("register.ftl").forward(req, resp);
         }
+    }
+
+    private void restoreInputData(HttpServletRequest req) {
+        req.setAttribute("past_first_name", req.getParameter("firstName"));
+        req.setAttribute("past_last_name", req.getParameter("lastName"));
+        req.setAttribute("past_email", req.getParameter("email"));
+        req.setAttribute("past_login", req.getParameter("login"));
     }
 }

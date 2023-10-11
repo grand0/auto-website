@@ -27,6 +27,6 @@
             <label class="form-check-label" for="remember-check">Remember me</label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Log in</button>
+        <button type="submit" class="btn btn-primary mb-3">Log in</button>
     </form>
 </#macro>

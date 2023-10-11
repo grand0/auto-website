@@ -7,16 +7,20 @@ import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserSaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.impl.UserServiceImpl;
+import ru.kpfu.itis.gr201.ponomarev.cars.util.CloudinaryUtil;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.PasswordUtil;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
 
 @WebServlet(name="profileEditServlet", urlPatterns="/profile_edit")
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 10 * 1024 * 1024)
 public class ProfileEditServlet extends HttpServlet {
     private void showPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
@@ -31,6 +35,25 @@ public class ProfileEditServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String newAvatarUrl = null;
+        Part avatarPart;
+        try {
+            avatarPart = req.getPart("avatar");
+        } catch (IllegalStateException e) {
+            req.setAttribute("avatar_too_big", true);
+            showPage(req, resp);
+            return;
+        }
+
+        if (avatarPart != null) {
+            if (!avatarPart.getContentType().startsWith("image/")) {
+                req.setAttribute("avatar_unsupported_format", true);
+                showPage(req, resp);
+                return;
+            }
+            newAvatarUrl = CloudinaryUtil.uploadPart(avatarPart);
+        }
+
         User oldUser = (User) req.getSession().getAttribute("user");
         String email = req.getParameter("email");
         String oldPassword = req.getParameter("oldPassword");
@@ -41,7 +64,7 @@ public class ProfileEditServlet extends HttpServlet {
                 oldUser.getFirstName(),
                 oldUser.getLastName(),
                 oldUser.getEmail(),
-                oldUser.getAvatarUrl(),
+                newAvatarUrl == null ? oldUser.getAvatarUrl() : newAvatarUrl,
                 oldUser.getLogin(),
                 null
         );
