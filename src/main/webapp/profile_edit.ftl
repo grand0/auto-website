@@ -5,6 +5,20 @@
 <#macro content>
     <h1 class="text-center my-3">Edit profile</h1>
 
+    <#if avatar_too_big??>
+        <p class="alert alert-danger m-3">
+            <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+            Avatar file exceeds size threshold.
+        </p>
+    </#if>
+
+    <#if avatar_unsupported_format??>
+        <p class="alert alert-danger m-3">
+            <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+            Format of avatar file is unsupported.
+        </p>
+    </#if>
+
     <#if email_not_unique??>
         <p class="alert alert-danger m-3">
             <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
@@ -33,7 +47,14 @@
         </p>
     </#if>
 
-    <form action="profile_edit" method="post" class="container">
+    <form action="profile_edit" method="post" enctype="multipart/form-data" class="container">
+        <div class="mb-3">
+            <label for="avatar-input" class="form-label">Avatar</label>
+            <input class="form-control" type="file" id="avatar-input" name="avatar" accept=".jpg, .jpeg, .png" aria-describedby="avatarHelp">
+            <div id="avatarHelp" class="form-text">
+                We recommend setting your real photo as an avatar. Max 5 MB. Supported formats: .jpg, .jpeg, .png.
+            </div>
+        </div>
         <div class="mb-5">
             <label for="email-input" class="form-label">E-mail</label>
             <input type="email" class="form-control" id="email-input" name="email" value="${email!}" required>

@@ -5,6 +5,20 @@
 <#macro content>
     <h1 class="text-center my-3">Register</h1>
 
+    <#if avatar_too_big??>
+        <p class="alert alert-danger m-3">
+            <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+            Avatar file exceeds size threshold.
+        </p>
+    </#if>
+
+    <#if avatar_unsupported_format??>
+        <p class="alert alert-danger m-3">
+            <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+            Format of avatar file is unsupported.
+        </p>
+    </#if>
+
     <#if password_not_confirmed??>
         <p class="alert alert-danger m-3">
             <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
@@ -33,14 +47,14 @@
         </p>
     </#if>
 
-    <form action="register" method="post" class="container">
-<#-- TODO: make it work -->
-<#--        <label>-->
-<#--            <span>Avatar</span>-->
-<#--            <input type="file" name="avatar" />-->
-<#--            <span class="btn file-chooser-btn">Choose file</span>-->
-<#--        </label>-->
-
+    <form action="register" method="post" enctype="multipart/form-data" class="container">
+        <div class="mb-3">
+            <label for="avatar-input" class="form-label">Avatar</label>
+            <input class="form-control" type="file" id="avatar-input" name="avatar" accept=".jpg, .jpeg, .png" aria-describedby="avatarHelp">
+            <div id="avatarHelp" class="form-text">
+                We recommend setting your real photo as an avatar. Max 5 MB. Supported formats: .jpg, .jpeg, .png.
+            </div>
+        </div>
         <div class="mb-3">
             <label for="first-name-input" class="form-label">First name</label>
             <input type="text" class="form-control" id="first-name-input" name="firstName" value="${past_first_name!}" required />
@@ -72,6 +86,6 @@
             <input class="form-check-input" type="checkbox" id="remember-check" value="">
             <label class="form-check-label" for="remember-check">Remember me</label>
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary mb-3">Register</button>
     </form>
 </#macro>
