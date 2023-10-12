@@ -40,6 +40,8 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
+        resp.setContentType("application/json");
+
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String remember = req.getParameter("remember");
@@ -50,12 +52,10 @@ public class AuthServlet extends HttpServlet {
             User user = userDao.getByLoginAndPassword(login, password);
             if (user != null) {
                 userService.auth(user, remember.equalsIgnoreCase("on"), req, resp);
-                resp.sendRedirect(req.getContextPath() + "/");
+                resp.getWriter().write("{\"success\":1}");
                 return;
             }
         }
-        req.setAttribute("unauthorized", true);
-        req.setAttribute("past_login", login);
-        req.getRequestDispatcher("auth.ftl").forward(req, resp);
+        resp.getWriter().write("{\"success\":0,\"unauthorized\":1}");
     }
 }

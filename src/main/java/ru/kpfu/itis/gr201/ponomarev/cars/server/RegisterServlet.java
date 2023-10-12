@@ -1,5 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.server;
 
+import org.json.JSONObject;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.UserDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.EmailAlreadyRegisteredException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.LoginAlreadyTakenException;
@@ -33,52 +34,55 @@ public class RegisterServlet extends HttpServlet {
         final UserDao userDao = new UserDao();
         final UserService userService = new UserServiceImpl(userDao);
 
+        resp.setContentType("application/json");
+
         boolean formValid = true;
+        JSONObject jsonResponse = new JSONObject();
 
         Part avatarPart = null;
         try {
             avatarPart = req.getPart("avatar");
         } catch (IllegalStateException e) {
-            req.setAttribute("avatar_too_big", true);
+            jsonResponse.put("avatar_too_big", true);
             formValid = false;
         }
 
         if (avatarPart != null) {
-            if (avatarPart.getContentType().equals("application/octet-stream")) {
+            if (avatarPart.getContentType() == null || avatarPart.getContentType().equals("application/octet-stream")) {
                 avatarPart = null;
             } else if (!avatarPart.getContentType().startsWith("image/")) {
-                req.setAttribute("avatar_unsupported_format", true);
+                jsonResponse.put("avatar_unsupported_format", true);
                 formValid = false;
             }
         }
 
         String firstName = req.getParameter("firstName");
-        if (ValidateUtil.validateName(firstName)) {
-            req.setAttribute("first_name_invalid", true);
+        if (!ValidateUtil.validateName(firstName)) {
+            jsonResponse.put("first_name_invalid", true);
             formValid = false;
         }
 
         String lastName = req.getParameter("lastName");
-        if (ValidateUtil.validateName(lastName)) {
-            req.setAttribute("last_name_invalid", true);
+        if (!ValidateUtil.validateName(lastName)) {
+            jsonResponse.put("last_name_invalid", true);
             formValid = false;
         }
 
         String email = req.getParameter("email");
-        if (ValidateUtil.validateEmail(email)) {
-            req.setAttribute("email_invalid", true);
+        if (!ValidateUtil.validateEmail(email)) {
+            jsonResponse.put("email_invalid", true);
             formValid = false;
         }
 
         String login = req.getParameter("login");
-        if (ValidateUtil.validateLogin(login)) {
-            req.setAttribute("login_invalid", true);
+        if (!ValidateUtil.validateLogin(login)) {
+            jsonResponse.put("login_invalid", true);
             formValid = false;
         }
 
         String password = req.getParameter("password");
-        if (ValidateUtil.validatePassword(password)) {
-            req.setAttribute("password_invalid", true);
+        if (!ValidateUtil.validatePassword(password)) {
+            jsonResponse.put("password_invalid", true);
             formValid = false;
         }
 
@@ -90,7 +94,8 @@ public class RegisterServlet extends HttpServlet {
         }
 
         if (!formValid) {
-            showPage(req, resp);
+            jsonResponse.put("success", false);
+            resp.getWriter().write(jsonResponse.toString());
         } else if (password.equals(confirmPassword)) {
             String avatarUrl = null;
             if (avatarPart != null) {
@@ -107,34 +112,23 @@ public class RegisterServlet extends HttpServlet {
             try {
                 userService.save(user);
                 userService.auth(user, remember.equalsIgnoreCase("on"), req, resp);
-                resp.sendRedirect(req.getContextPath() + "/");
+                jsonResponse.put("success", true);
+                resp.getWriter().write(jsonResponse.toString());
             } catch (UserSaveException e) {
                 if (e instanceof EmailAlreadyRegisteredException) {
-                    req.setAttribute(
-                            "email_not_unique",
-                            ((EmailAlreadyRegisteredException) e).getEmail()
-                    );
+                    jsonResponse.put("email_not_unique", ((EmailAlreadyRegisteredException) e).getEmail());
                 } else if (e instanceof LoginAlreadyTakenException) {
-                    req.setAttribute(
-                            "login_not_unique",
-                            ((LoginAlreadyTakenException) e).getLogin()
-                    );
+                    jsonResponse.put("login_not_unique", ((LoginAlreadyTakenException) e).getLogin());
                 } else {
-                    req.setAttribute("unknown_error", true);
+                    jsonResponse.put("unknown_error", true);
                 }
-                showPage(req, resp);
+                jsonResponse.put("success", false);
+                resp.getWriter().write(jsonResponse.toString());
             }
         } else {
-            req.setAttribute("password_not_confirmed", true);
-            showPage(req, resp);
+            jsonResponse.put("password_not_confirmed", true);
+            jsonResponse.put("success", false);
+            resp.getWriter().write(jsonResponse.toString());
         }
-    }
-
-    private void showPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("past_first_name", req.getParameter("firstName"));
-        req.setAttribute("past_last_name", req.getParameter("lastName"));
-        req.setAttribute("past_email", req.getParameter("email"));
-        req.setAttribute("past_login", req.getParameter("login"));
-        req.getRequestDispatcher("register.ftl").forward(req, resp);
     }
 }
