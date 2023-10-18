@@ -1,9 +1,7 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.server;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.UserDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
-import ru.kpfu.itis.gr201.ponomarev.cars.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,15 +13,11 @@ import java.io.IOException;
 @WebServlet(name = "authServlet", urlPatterns = "/auth")
 public class AuthServlet extends HttpServlet {
 
-    private final UserDao userDao = new UserDao();
-    private final UserService userService = new UserServiceImpl(userDao);
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if (action != null && action.equalsIgnoreCase("logout")) {
-            userService.logout(req, resp);
-            resp.sendRedirect(req.getContextPath() + "/");
+            logoutAndRedirectToMainPage(req, resp);
         } else if (req.getSession(false) != null) {
             resp.sendRedirect(req.getContextPath() + "/");
         } else {
@@ -35,8 +29,7 @@ public class AuthServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if (action != null && action.equalsIgnoreCase("logout")) {
-            userService.logout(req, resp);
-            resp.sendRedirect(req.getContextPath() + "/");
+            logoutAndRedirectToMainPage(req, resp);
             return;
         }
 
@@ -49,7 +42,8 @@ public class AuthServlet extends HttpServlet {
             remember = "off";
         }
         if (login != null && password != null) {
-            User user = userDao.getByLoginAndPassword(login, password);
+            UserService userService = (UserService) getServletContext().getAttribute("userService");
+            User user = userService.getByLoginAndPassword(login, password);
             if (user != null) {
                 userService.auth(user, remember.equalsIgnoreCase("on"), req, resp);
                 resp.getWriter().write("{\"success\":1}");
@@ -57,5 +51,11 @@ public class AuthServlet extends HttpServlet {
             }
         }
         resp.getWriter().write("{\"success\":0,\"unauthorized\":1}");
+    }
+
+    private void logoutAndRedirectToMainPage(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        UserService userService = (UserService) getServletContext().getAttribute("userService");
+        userService.logout(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/");
     }
 }

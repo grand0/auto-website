@@ -1,8 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.server;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.UserDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
-import ru.kpfu.itis.gr201.ponomarev.cars.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,8 +13,7 @@ import java.io.IOException;
 public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserDao userDao = new UserDao();
-        UserService userService = new UserServiceImpl(userDao);
+        UserService userService = (UserService) getServletContext().getAttribute("userService");
 
         // TODO: replace with filter
         if (userService.isAuthed(req, resp)) {

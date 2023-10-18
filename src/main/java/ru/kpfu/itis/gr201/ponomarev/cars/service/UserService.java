@@ -14,7 +14,9 @@ public interface UserService {
     UserDto get(int id);
     void save(User user) throws UserSaveException;
     void auth(User user, boolean writeCookie, HttpServletRequest req, HttpServletResponse resp);
+    UserDto getAuthedUserDto(HttpServletRequest req, HttpServletResponse resp);
     boolean isAuthed(HttpServletRequest req, HttpServletResponse resp);
     void logout(HttpServletRequest req, HttpServletResponse resp);
     void changeUserDetails(User newUser, HttpServletRequest req, HttpServletResponse resp) throws UserNotAuthenticatedException, UserSaveException;
+    User getByLoginAndPassword(String login, String password);
 }

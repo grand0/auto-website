@@ -25,20 +25,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        return userDao.getAll().stream().map(
-                u -> new UserDto(
-                        u.getFirstName(),
-                        u.getLastName(),
-                        u.getEmail(),
-                        u.getAvatarUrl()
-                )
-        ).collect(Collectors.toList());
+        return userDao.getAll().stream().map(this::toUserDto).collect(Collectors.toList());
     }
 
     @Override
     public UserDto get(int id) {
         User user = userDao.get(id);
+        return toUserDto(user);
+    }
+
+    public UserDto toUserDto(User user) {
         return new UserDto(
+                user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
@@ -54,16 +52,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void auth(User user, boolean writeCookie, HttpServletRequest req, HttpServletResponse resp) {
-//        req.getSession().setAttribute(
-//                "user",
-//                new UserDto(
-//                        user.getFirstName(),
-//                        user.getLastName(),
-//                        user.getEmail(),
-//                        user.getAvatarUrl()
-//                )
-//        );
-
         req.getSession().setAttribute("user", user);
 
         if (writeCookie) {
@@ -74,6 +62,15 @@ public class UserServiceImpl implements UserService {
             resp.addCookie(loginCookie);
             resp.addCookie(passwordCookie);
         }
+    }
+
+    @Override
+    public UserDto getAuthedUserDto(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            return toUserDto((User) session.getAttribute("user"));
+        }
+        return null;
     }
 
     @Override
@@ -111,5 +108,11 @@ public class UserServiceImpl implements UserService {
         userDao.update(oldUser.getId(), newUser);
         User updatedUser = userDao.get(oldUser.getId());
         auth(updatedUser, req.getCookies() != null, req, resp);
+    }
+
+    @Override
+    public User getByLoginAndPassword(String login, String password) {
+        String passwordHash = PasswordUtil.encrypt(password);
+        return userDao.getByLoginAndPasswordHash(login, passwordHash);
     }
 }

@@ -1,7 +1,5 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.model;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.util.CloudinaryUtil;
-
 import java.util.Objects;
 
 public class User {
@@ -30,10 +28,6 @@ public class User {
         this.avatarUrl = avatarUrl;
         this.login = login;
         this.password = password;
-    }
-
-    public String getRoundCroppedAvatarUrl() {
-        return CloudinaryUtil.getRoundCroppedImageUrl(avatarUrl);
     }
 
     public int getId() {

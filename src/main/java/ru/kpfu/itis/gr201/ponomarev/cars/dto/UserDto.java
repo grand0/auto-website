@@ -1,18 +1,34 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.dto;
 
+import ru.kpfu.itis.gr201.ponomarev.cars.util.CloudinaryUtil;
+
 import java.util.Objects;
 
 public class UserDto {
+    private int id;
     private String firstName;
     private String lastName;
     private String email;
     private String avatarUrl;
 
-    public UserDto(String firstName, String lastName, String email, String avatarUrl) {
+    public UserDto(int id, String firstName, String lastName, String email, String avatarUrl) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.avatarUrl = avatarUrl;
+    }
+
+    public String getRoundCroppedAvatarUrl() {
+        return CloudinaryUtil.getRoundCroppedImageUrl(avatarUrl);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -52,12 +68,12 @@ public class UserDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserDto userDto = (UserDto) o;
-        return Objects.equals(getFirstName(), userDto.getFirstName()) && Objects.equals(getLastName(), userDto.getLastName()) && Objects.equals(getEmail(), userDto.getEmail()) && Objects.equals(getAvatarUrl(), userDto.getAvatarUrl());
+        return getId() == userDto.getId() && Objects.equals(getFirstName(), userDto.getFirstName()) && Objects.equals(getLastName(), userDto.getLastName()) && Objects.equals(getEmail(), userDto.getEmail()) && Objects.equals(getAvatarUrl(), userDto.getAvatarUrl());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFirstName(), getLastName(), getEmail(), getAvatarUrl());
+        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getAvatarUrl());
     }
 
     @Override

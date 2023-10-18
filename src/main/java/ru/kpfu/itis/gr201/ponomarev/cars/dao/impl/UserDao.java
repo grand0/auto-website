@@ -7,7 +7,6 @@ import ru.kpfu.itis.gr201.ponomarev.cars.exception.LoginAlreadyTakenException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserSaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.DatabaseConnectionUtil;
-import ru.kpfu.itis.gr201.ponomarev.cars.util.PasswordUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -90,11 +89,6 @@ public class UserDao implements Dao<User> {
                 throw new UserSaveException(e);
             }
         }
-    }
-
-    public User getByLoginAndPassword(String login, String password) {
-        String passwordHash = PasswordUtil.encrypt(password);
-        return getByLoginAndPasswordHash(login, passwordHash);
     }
 
     public User getByLoginAndPasswordHash(String login, String passwordHash) {
