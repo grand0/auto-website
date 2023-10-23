@@ -33,6 +33,7 @@ public class CloudinaryUtil {
                         .radius("max")
                         .width(150)
                         .crop("fill")
+                        .fetchFormat("png")
         ).generate(url);
     }
 

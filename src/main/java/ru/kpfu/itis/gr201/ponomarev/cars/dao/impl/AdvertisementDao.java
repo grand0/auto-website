@@ -123,6 +123,17 @@ public class AdvertisementDao implements Dao<Advertisement> {
         }
     }
 
+    public void delete(int id) {
+        try {
+            String sql = "DELETE FROM advertisements WHERE id = ?;";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private Advertisement getFromResultSet(ResultSet set) throws SQLException {
         return new Advertisement(
                 set.getInt("id"),

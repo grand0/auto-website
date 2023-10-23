@@ -51,10 +51,16 @@
                         <a class="nav-link" href="${contextPath}/advertisements">Advertisements</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${contextPath}/garage">Garage</a>
+                        <a class="nav-link" href="${contextPath}/advertisements/my">My advertisements</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="${contextPath}/advertisements/new">New advertisement</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${contextPath}/garage">Garage</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${contextPath}/garage/new">Add car</a>
                     </li>
                 </ul>
                 <#if user??>

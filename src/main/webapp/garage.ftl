@@ -31,7 +31,6 @@
                         function (response) {
                             console.log(response + " " + response.success)
                             if (response.success) {
-                                // $(this).parents(".card").remove()
                                 window.location.reload()
                             } else if ("unauthorized" in response) {
                                 window.location.replace("${contextPath}/auth")
@@ -133,7 +132,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Delete car</h1>
+                    <h1 class="modal-title fs-5">Delete car</h1>
                 </div>
                 <div class="modal-body"></div>
                 <div class="modal-footer">
