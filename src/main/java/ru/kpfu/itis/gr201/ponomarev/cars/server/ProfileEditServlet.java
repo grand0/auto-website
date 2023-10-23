@@ -3,7 +3,7 @@ package ru.kpfu.itis.gr201.ponomarev.cars.server;
 import org.json.JSONObject;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.EmailAlreadyRegisteredException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserNotAuthenticatedException;
-import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserSaveException;
+import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.CloudinaryUtil;
@@ -118,7 +118,7 @@ public class ProfileEditServlet extends HttpServlet {
             jsonResponse.put("unauthorized", true);
             jsonResponse.put("success", false);
             resp.getWriter().write(jsonResponse.toString());
-        } catch (UserSaveException e) {
+        } catch (SaveException e) {
             if (e instanceof EmailAlreadyRegisteredException) {
                 jsonResponse.put("email_not_unique", ((EmailAlreadyRegisteredException) e).getEmail());
             } else {

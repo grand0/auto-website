@@ -4,6 +4,10 @@ public class Make {
     private int id;
     private String make;
 
+    public Make(String make) {
+        this.make = make;
+    }
+
     public Make(int id, String make) {
         this.id = id;
         this.make = make;

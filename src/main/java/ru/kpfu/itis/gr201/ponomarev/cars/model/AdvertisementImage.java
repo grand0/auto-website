@@ -5,6 +5,11 @@ public class AdvertisementImage {
     private int advertisementId;
     private String imageUrl;
 
+    public AdvertisementImage(int advertisementId, String imageUrl) {
+        this.advertisementId = advertisementId;
+        this.imageUrl = imageUrl;
+    }
+
     public AdvertisementImage(int id, int advertisementId, String imageUrl) {
         this.id = id;
         this.advertisementId = advertisementId;

@@ -1,26 +1,38 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.model;
 
+import java.util.Objects;
+
 public class Car {
     private int id;
-    private int makeId;
     private int modelId;
-    private int bodyId;
-    private int transmissionId;
-    private int engineId;
-    private int driveId;
-    private double engineVolume;
+    private Body body;
+    private Transmission transmission;
+    private Engine engine;
+    private Drive drive;
+    private float engineVolume;
     private int year;
     private int horsepower;
     private boolean leftWheel;
 
-    public Car(int id, int makeId, int modelId, int bodyId, int transmissionId, int engineId, int driveId, double engineVolume, int year, int horsepower, boolean leftWheel) {
-        this.id = id;
-        this.makeId = makeId;
+    public Car(int modelId, Body body, Transmission transmission, Engine engine, Drive drive, float engineVolume, int year, int horsepower, boolean leftWheel) {
         this.modelId = modelId;
-        this.bodyId = bodyId;
-        this.transmissionId = transmissionId;
-        this.engineId = engineId;
-        this.driveId = driveId;
+        this.body = body;
+        this.transmission = transmission;
+        this.engine = engine;
+        this.drive = drive;
+        this.engineVolume = engineVolume;
+        this.year = year;
+        this.horsepower = horsepower;
+        this.leftWheel = leftWheel;
+    }
+
+    public Car(int id, int modelId, Body body, Transmission transmission, Engine engine, Drive drive, float engineVolume, int year, int horsepower, boolean leftWheel) {
+        this.id = id;
+        this.modelId = modelId;
+        this.body = body;
+        this.transmission = transmission;
+        this.engine = engine;
+        this.drive = drive;
         this.engineVolume = engineVolume;
         this.year = year;
         this.horsepower = horsepower;
@@ -35,14 +47,6 @@ public class Car {
         this.id = id;
     }
 
-    public int getMakeId() {
-        return makeId;
-    }
-
-    public void setMakeId(int makeId) {
-        this.makeId = makeId;
-    }
-
     public int getModelId() {
         return modelId;
     }
@@ -51,43 +55,43 @@ public class Car {
         this.modelId = modelId;
     }
 
-    public int getBodyId() {
-        return bodyId;
+    public Body getBody() {
+        return body;
     }
 
-    public void setBodyId(int bodyId) {
-        this.bodyId = bodyId;
+    public void setBody(Body body) {
+        this.body = body;
     }
 
-    public int getTransmissionId() {
-        return transmissionId;
+    public Transmission getTransmission() {
+        return transmission;
     }
 
-    public void setTransmissionId(int transmissionId) {
-        this.transmissionId = transmissionId;
+    public void setTransmission(Transmission transmission) {
+        this.transmission = transmission;
     }
 
-    public int getEngineId() {
-        return engineId;
+    public Engine getEngine() {
+        return engine;
     }
 
-    public void setEngineId(int engineId) {
-        this.engineId = engineId;
+    public void setEngine(Engine engine) {
+        this.engine = engine;
     }
 
-    public int getDriveId() {
-        return driveId;
+    public Drive getDrive() {
+        return drive;
     }
 
-    public void setDriveId(int driveId) {
-        this.driveId = driveId;
+    public void setDrive(Drive drive) {
+        this.drive = drive;
     }
 
-    public double getEngineVolume() {
+    public float getEngineVolume() {
         return engineVolume;
     }
 
-    public void setEngineVolume(double engineVolume) {
+    public void setEngineVolume(float engineVolume) {
         this.engineVolume = engineVolume;
     }
 
@@ -113,5 +117,34 @@ public class Car {
 
     public void setLeftWheel(boolean leftWheel) {
         this.leftWheel = leftWheel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return getId() == car.getId() && getModelId() == car.getModelId() && Double.compare(getEngineVolume(), car.getEngineVolume()) == 0 && getYear() == car.getYear() && getHorsepower() == car.getHorsepower() && isLeftWheel() == car.isLeftWheel() && getBody() == car.getBody() && getTransmission() == car.getTransmission() && getEngine() == car.getEngine() && getDrive() == car.getDrive();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getModelId(), getBody(), getTransmission(), getEngine(), getDrive(), getEngineVolume(), getYear(), getHorsepower(), isLeftWheel());
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", modelId=" + modelId +
+                ", body=" + body +
+                ", transmission=" + transmission +
+                ", engine=" + engine +
+                ", drive=" + drive +
+                ", engineVolume=" + engineVolume +
+                ", year=" + year +
+                ", horsepower=" + horsepower +
+                ", leftWheel=" + leftWheel +
+                '}';
     }
 }

@@ -1,9 +1,11 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.service.impl;
 
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.UsersCarsDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.UserDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.UserDto;
-import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserSaveException;
+import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserNotAuthenticatedException;
+import ru.kpfu.itis.gr201.ponomarev.cars.model.Car;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.PasswordUtil;
@@ -18,9 +20,11 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
+    private final UsersCarsDao usersCarsDao;
 
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, UsersCarsDao usersCarsDao) {
         this.userDao = userDao;
+        this.usersCarsDao = usersCarsDao;
     }
 
     @Override
@@ -34,6 +38,7 @@ public class UserServiceImpl implements UserService {
         return toUserDto(user);
     }
 
+    @Override
     public UserDto toUserDto(User user) {
         return new UserDto(
                 user.getId(),
@@ -45,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) throws UserSaveException {
+    public void save(User user) throws SaveException {
         user.setPassword(PasswordUtil.encrypt(user.getPassword()));
         userDao.save(user);
     }
@@ -95,7 +100,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeUserDetails(User newUser, HttpServletRequest req, HttpServletResponse resp) throws UserNotAuthenticatedException, UserSaveException {
+    public void changeUserDetails(User newUser, HttpServletRequest req, HttpServletResponse resp) throws UserNotAuthenticatedException, SaveException {
         if (!isAuthed(req, resp)) {
             throw new UserNotAuthenticatedException();
         }
@@ -114,5 +119,14 @@ public class UserServiceImpl implements UserService {
     public User getByLoginAndPassword(String login, String password) {
         String passwordHash = PasswordUtil.encrypt(password);
         return userDao.getByLoginAndPasswordHash(login, passwordHash);
+    }
+
+    @Override
+    public void addCarToCurrentUser(Car car, HttpServletRequest req, HttpServletResponse resp) throws UserNotAuthenticatedException {
+        if (!isAuthed(req, resp)) {
+            throw new UserNotAuthenticatedException();
+        }
+        UserDto user = getAuthedUserDto(req, resp);
+        usersCarsDao.addCarToUser(user.getId(), car.getId());
     }
 }

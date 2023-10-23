@@ -5,6 +5,11 @@ public class Model {
     private int makeId;
     private String model;
 
+    public Model(int makeId, String model) {
+        this.makeId = makeId;
+        this.model = model;
+    }
+
     public Model(int id, int makeId, String model) {
         this.id = id;
         this.makeId = makeId;

@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.Dao;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.EmailAlreadyRegisteredException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.LoginAlreadyTakenException;
+import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserSaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.DatabaseConnectionUtil;
@@ -24,15 +25,7 @@ public class UserDao implements Dao<User> {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return new User(
-                        resultSet.getInt("id"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("last_name"),
-                        resultSet.getString("email"),
-                        resultSet.getString("avatar_url"),
-                        resultSet.getString("login"),
-                        resultSet.getString("password")
-                );
+                return getFromResultSet(resultSet);
             } else {
                 return null;
             }
@@ -49,17 +42,7 @@ public class UserDao implements Dao<User> {
             ResultSet resultSet = statement.executeQuery(sql);
             List<User> users = new ArrayList<>();
             while (resultSet.next()) {
-                users.add(
-                        new User(
-                                resultSet.getInt("id"),
-                                resultSet.getString("first_name"),
-                                resultSet.getString("last_name"),
-                                resultSet.getString("email"),
-                                resultSet.getString("avatar_url"),
-                                resultSet.getString("login"),
-                                resultSet.getString("password")
-                        )
-                );
+                users.add(getFromResultSet(resultSet));
             }
             return users;
         } catch (SQLException e) {
@@ -68,7 +51,7 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public void save(User user) throws UserSaveException {
+    public void save(User user) throws SaveException {
         try {
             String sql = "INSERT INTO Users(first_name, last_name, email, avatar_url, login, password) VALUES (?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -99,15 +82,7 @@ public class UserDao implements Dao<User> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 if (resultSet.getString("password").equals(passwordHash)) {
-                    return new User(
-                            resultSet.getInt("id"),
-                            resultSet.getString("first_name"),
-                            resultSet.getString("last_name"),
-                            resultSet.getString("email"),
-                            resultSet.getString("avatar_url"),
-                            resultSet.getString("login"),
-                            resultSet.getString("password")
-                    );
+                    return getFromResultSet(resultSet);
                 } else {
                     return null;
                 }
@@ -120,7 +95,7 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public void update(int id, User user) throws UserSaveException {
+    public void update(int id, User user) throws SaveException {
         try {
             PreparedStatement statement;
             if (user.getPassword() == null) {
@@ -148,5 +123,17 @@ public class UserDao implements Dao<User> {
                 throw new UserSaveException(e);
             }
         }
+    }
+
+    private User getFromResultSet(ResultSet set) throws SQLException {
+        return new User(
+                set.getInt("id"),
+                set.getString("first_name"),
+                set.getString("last_name"),
+                set.getString("email"),
+                set.getString("avatar_url"),
+                set.getString("login"),
+                set.getString("password")
+        );
     }
 }
