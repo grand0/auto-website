@@ -1,6 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.exception;
 
-public class UserSaveException extends Exception {
+public class UserSaveException extends SaveException {
     public UserSaveException() {
         super();
     }

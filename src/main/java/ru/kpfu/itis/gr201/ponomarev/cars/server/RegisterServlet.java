@@ -3,7 +3,7 @@ package ru.kpfu.itis.gr201.ponomarev.cars.server;
 import org.json.JSONObject;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.EmailAlreadyRegisteredException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.LoginAlreadyTakenException;
-import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserSaveException;
+import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.CloudinaryUtil;
@@ -110,7 +110,7 @@ public class RegisterServlet extends HttpServlet {
                 userService.auth(user, remember.equalsIgnoreCase("on"), req, resp);
                 jsonResponse.put("success", true);
                 resp.getWriter().write(jsonResponse.toString());
-            } catch (UserSaveException e) {
+            } catch (SaveException e) {
                 if (e instanceof EmailAlreadyRegisteredException) {
                     jsonResponse.put("email_not_unique", ((EmailAlreadyRegisteredException) e).getEmail());
                 } else if (e instanceof LoginAlreadyTakenException) {

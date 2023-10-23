@@ -1,14 +1,17 @@
-package ru.kpfu.itis.gr201.ponomarev.cars.model;
+package ru.kpfu.itis.gr201.ponomarev.cars.dto;
+
+import ru.kpfu.itis.gr201.ponomarev.cars.model.Condition;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
-public class Advertisement {
+public class AdvertisementDto {
     private int id;
-    private int carId;
+    private CarDto car;
     private String description;
     private int price;
-    private int sellerId;
+    private UserDto seller;
     private Timestamp publicationTs;
     private int mileage;
     private String carColor;
@@ -16,27 +19,14 @@ public class Advertisement {
     private int owners;
     private boolean exchangeAllowed;
     private int viewCount;
+    private List<String> imagesUrls;
 
-    public Advertisement(int carId, String description, int price, int sellerId, Timestamp publicationTs, int mileage, String carColor, Condition condition, int owners, boolean exchangeAllowed, int viewCount) {
-        this.carId = carId;
-        this.description = description;
-        this.price = price;
-        this.sellerId = sellerId;
-        this.publicationTs = publicationTs;
-        this.mileage = mileage;
-        this.carColor = carColor;
-        this.condition = condition;
-        this.owners = owners;
-        this.exchangeAllowed = exchangeAllowed;
-        this.viewCount = viewCount;
-    }
-
-    public Advertisement(int id, int carId, String description, int price, int sellerId, Timestamp publicationTs, int mileage, String carColor, Condition condition, int owners, boolean exchangeAllowed, int viewCount) {
+    public AdvertisementDto(int id, CarDto car, String description, int price, UserDto seller, Timestamp publicationTs, int mileage, String carColor, Condition condition, int owners, boolean exchangeAllowed, int viewCount, List<String> imagesUrls) {
         this.id = id;
-        this.carId = carId;
+        this.car = car;
         this.description = description;
         this.price = price;
-        this.sellerId = sellerId;
+        this.seller = seller;
         this.publicationTs = publicationTs;
         this.mileage = mileage;
         this.carColor = carColor;
@@ -44,6 +34,7 @@ public class Advertisement {
         this.owners = owners;
         this.exchangeAllowed = exchangeAllowed;
         this.viewCount = viewCount;
+        this.imagesUrls = imagesUrls;
     }
 
     public int getId() {
@@ -54,12 +45,12 @@ public class Advertisement {
         this.id = id;
     }
 
-    public int getCarId() {
-        return carId;
+    public CarDto getCar() {
+        return car;
     }
 
-    public void setCarId(int carId) {
-        this.carId = carId;
+    public void setCar(CarDto car) {
+        this.car = car;
     }
 
     public String getDescription() {
@@ -78,12 +69,12 @@ public class Advertisement {
         this.price = price;
     }
 
-    public int getSellerId() {
-        return sellerId;
+    public UserDto getSeller() {
+        return seller;
     }
 
-    public void setSellerId(int sellerId) {
-        this.sellerId = sellerId;
+    public void setSeller(UserDto seller) {
+        this.seller = seller;
     }
 
     public Timestamp getPublicationTs() {
@@ -142,16 +133,29 @@ public class Advertisement {
         this.viewCount = viewCount;
     }
 
+    public List<String> getImagesUrls() {
+        return imagesUrls;
+    }
+
+    public void setImagesUrls(List<String> imagesUrls) {
+        this.imagesUrls = imagesUrls;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Advertisement that = (Advertisement) o;
-        return getId() == that.getId() && getCarId() == that.getCarId() && getPrice() == that.getPrice() && getSellerId() == that.getSellerId() && getMileage() == that.getMileage() && getOwners() == that.getOwners() && isExchangeAllowed() == that.isExchangeAllowed() && getViewCount() == that.getViewCount() && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getPublicationTs(), that.getPublicationTs()) && Objects.equals(getCarColor(), that.getCarColor()) && getCondition() == that.getCondition();
+        AdvertisementDto that = (AdvertisementDto) o;
+        return getId() == that.getId() && getPrice() == that.getPrice() && getMileage() == that.getMileage() && getOwners() == that.getOwners() && isExchangeAllowed() == that.isExchangeAllowed() && getViewCount() == that.getViewCount() && Objects.equals(getCar(), that.getCar()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getSeller(), that.getSeller()) && Objects.equals(getPublicationTs(), that.getPublicationTs()) && Objects.equals(getCarColor(), that.getCarColor()) && Objects.equals(getCondition(), that.getCondition()) && Objects.equals(getImagesUrls(), that.getImagesUrls());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getCarId(), getDescription(), getPrice(), getSellerId(), getPublicationTs(), getMileage(), getCarColor(), getCondition(), getOwners(), isExchangeAllowed(), getViewCount());
+        return Objects.hash(getId(), getCar(), getDescription(), getPrice(), getSeller(), getPublicationTs(), getMileage(), getCarColor(), getCondition(), getOwners(), isExchangeAllowed(), getViewCount(), getImagesUrls());
+    }
+
+    @Override
+    public String toString() {
+        return condition + " " + carColor + " " + car;
     }
 }
