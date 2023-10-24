@@ -86,6 +86,10 @@
                             <div class="card-header d-flex justify-content-between">
                                 <h5 class="mt-2">${ad}</h5>
                                 <div>
+                                    <a class="icon-link mt-2 me-2" href="${contextPath}/chat?ad_id=${ad.id}">
+                                        <i class="bi bi-card-heading"></i>
+                                        <span>Chat</span>
+                                    </a>
                                     <a class="icon-link mt-2 me-2" href="${contextPath}/advertisements?id=${ad.id}">
                                         <i class="bi bi-card-heading"></i>
                                         <span>Go to ad</span>
