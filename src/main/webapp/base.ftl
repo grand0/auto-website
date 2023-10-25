@@ -60,7 +60,7 @@
                         <a class="nav-link" href="${contextPath}/garage">Garage</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${contextPath}/garage/new">Add car</a>
+                        <a class="nav-link" href="${contextPath}/chats">Chats</a>
                     </li>
                 </ul>
                 <#if user??>

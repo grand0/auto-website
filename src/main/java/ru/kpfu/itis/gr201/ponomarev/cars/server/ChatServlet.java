@@ -65,7 +65,7 @@ public class ChatServlet extends HttpServlet {
             try {
                 senderId = Integer.parseInt(senderIdStr);
             } catch (NumberFormatException | NullPointerException e) {
-                List<UserDto> chats = messageService.getAllRecipientsOfAdvertisements(adId, user.getId());
+                List<UserDto> chats = messageService.getAllRecipientsOfAdvertisement(adId, user.getId());
                 req.setAttribute("adId", adId);
                 req.setAttribute("chats", chats);
                 req.getRequestDispatcher("/msgsenders.ftl").forward(req, resp);

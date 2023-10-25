@@ -67,6 +67,29 @@ public class MessageDaoImpl implements MessageDao {
         }
     }
 
+    @Override
+    public List<Integer> getAllAdvertisementIdsToWhichUserSentMessage(int userId) {
+        try {
+            String sql = "select distinct advertisement_id " +
+                    "from messages " +
+                    "where advertisement_id in (select id " +
+                    "                           from advertisements " +
+                    "                           where seller_id != ?) " +
+                    "  and ? = sender_id;";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userId);
+            statement.setInt(2, userId);
+            ResultSet set = statement.executeQuery();
+            List<Integer> ids = new ArrayList<>();
+            while (set.next()) {
+                ids.add(set.getInt("advertisement_id"));
+            }
+            return ids;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private Message getFromResultSet(ResultSet set) throws SQLException {
         return new Message(
                 set.getInt("id"),
