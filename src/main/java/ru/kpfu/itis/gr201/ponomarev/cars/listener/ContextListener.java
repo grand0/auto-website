@@ -1,5 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.listener;
 
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.BookmarksDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.MessageDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.UsersCarsDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.*;
@@ -22,6 +23,7 @@ public class ContextListener implements ServletContextListener {
         AdvertisementImagesDao advertisementImagesDao = new AdvertisementImagesDao();
         UsersCarsDao usersCarsDao = new UsersCarsDaoImpl();
         MessageDao messageDao = new MessageDaoImpl();
+        BookmarksDao bookmarksDao = new BookmarksDaoImpl();
 
         UserService userService = new UserServiceImpl(userDao, usersCarsDao);
         ModelService modelService = new ModelServiceImpl(makeDao, modelDao);
@@ -29,6 +31,7 @@ public class ContextListener implements ServletContextListener {
         AdvertisementService advertisementService = new AdvertisementServiceImpl(advertisementDao, advertisementImagesDao, carService, userService);
         UsersCarsService usersCarsService = new UsersCarsServiceImpl(usersCarsDao, carService, userService);
         MessageService messageService = new MessageServiceImpl(messageDao, userService, advertisementDao, advertisementService);
+        BookmarksService bookmarksService = new BookmarksServiceImpl(bookmarksDao, advertisementService);
 
         sce.getServletContext().setAttribute("userDao", userDao);
         sce.getServletContext().setAttribute("userService", userService);
@@ -44,5 +47,7 @@ public class ContextListener implements ServletContextListener {
         sce.getServletContext().setAttribute("usersCarsService", usersCarsService);
         sce.getServletContext().setAttribute("messageDao", messageDao);
         sce.getServletContext().setAttribute("messageService", messageService);
+        sce.getServletContext().setAttribute("bookmarksDao", bookmarksDao);
+        sce.getServletContext().setAttribute("bookmarksService", bookmarksService);
     }
 }
