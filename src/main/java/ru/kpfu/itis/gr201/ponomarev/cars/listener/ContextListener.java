@@ -28,7 +28,7 @@ public class ContextListener implements ServletContextListener {
         CarService carService = new CarServiceImpl(carDao, makeDao, modelDao);
         AdvertisementService advertisementService = new AdvertisementServiceImpl(advertisementDao, advertisementImagesDao, carService, userService);
         UsersCarsService usersCarsService = new UsersCarsServiceImpl(usersCarsDao, carService, userService);
-        MessageService messageService = new MessageServiceImpl(messageDao, userService);
+        MessageService messageService = new MessageServiceImpl(messageDao, userService, advertisementDao, advertisementService);
 
         sce.getServletContext().setAttribute("userDao", userDao);
         sce.getServletContext().setAttribute("userService", userService);
