@@ -7,6 +7,7 @@ import ru.kpfu.itis.gr201.ponomarev.cars.dto.CarDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.UserDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.Advertisement;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.AdvertisementImage;
+import ru.kpfu.itis.gr201.ponomarev.cars.model.filter.AdvertisementFilter;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.AdvertisementService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.CarService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
@@ -31,6 +32,13 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Override
     public List<AdvertisementDto> getAll() {
         return advertisementDao.getAll().stream().map(this::toAdvertisementDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AdvertisementDto> getAllWithFilter(AdvertisementFilter filter) {
+        return advertisementDao.getAllWithFilter(filter).stream()
+                .map(this::toAdvertisementDto)
+                .collect(Collectors.toList());
     }
 
     @Override
