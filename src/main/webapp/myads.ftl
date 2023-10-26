@@ -88,7 +88,7 @@
                                 <div>
                                     <a class="icon-link mt-2 me-2" href="${contextPath}/advertisements?id=${ad.id}">
                                         <i class="bi bi-card-heading"></i>
-                                        <span>Go to ad</span>
+                                        <span>View ad</span>
                                     </a>
                                     <a class="icon-link mt-2 link-danger" href="#" data-bs-toggle="modal" data-bs-target="#delete-ad-modal" data-bs-ad-name="${ad}" data-bs-ad-id="${ad.id}">
                                         <i class="bi bi-trash"></i>
