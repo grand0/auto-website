@@ -34,7 +34,7 @@ public class AdvertisementDao implements Dao<Advertisement> {
     @Override
     public List<Advertisement> getAll() {
         try {
-            String sql = "SELECT * FROM advertisements;";
+            String sql = "SELECT * FROM advertisements ORDER BY publication_ts DESC;";
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet set = statement.executeQuery();
             List<Advertisement> advertisements = new ArrayList<>();
@@ -58,7 +58,7 @@ public class AdvertisementDao implements Dao<Advertisement> {
                     "(? IS NULL OR owners <= ?) AND " +
                     "(condition = ANY(?)) AND " +
                     "(? IS NULL OR exchange_allowed = ?) " +
-                    "ORDER BY publication_ts;";
+                    "ORDER BY publication_ts DESC;";
             PreparedStatement statement = connection.prepareStatement(sql);
             if (filter.getPriceFrom() != null) {
                 statement.setInt(1, filter.getPriceFrom());
