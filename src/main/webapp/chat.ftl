@@ -89,7 +89,7 @@
                 <div>
                     <a href="${contextPath}/advertisements?id=${ad.id}" class="icon-link">
                         <i class="bi bi-card-heading"></i>
-                        <span>Go to ad</span>
+                        <span>View ad</span>
                     </a>
                 </div>
             </div>
@@ -97,6 +97,12 @@
                 <div>
                     <img src="${recipient.getRoundCroppedAvatarUrl()}" alt="avatar" width="50" height="50" class="me-3">
                     <span>${recipient}</span>
+                </div>
+                <div>
+                    <a class="icon-link" href="${contextPath}/profile?id=${recipient.id}">
+                        <i class="bi bi-person-fill"></i>
+                        View profile
+                    </a>
                 </div>
             </div>
             <div class="card-body">
