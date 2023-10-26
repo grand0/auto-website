@@ -59,7 +59,7 @@ public class MessageServiceImpl implements MessageService {
         return new MessageDto(
                 sender,
                 message.getMessage(),
-                message.getSentTs()
+                message.getSentTs().toString()
         );
     }
 }

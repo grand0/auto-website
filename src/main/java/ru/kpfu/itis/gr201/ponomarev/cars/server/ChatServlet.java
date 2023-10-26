@@ -2,9 +2,11 @@ package ru.kpfu.itis.gr201.ponomarev.cars.server;
 
 import org.json.JSONObject;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.MessageDao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dto.AdvertisementDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.MessageDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.UserDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.Message;
+import ru.kpfu.itis.gr201.ponomarev.cars.service.AdvertisementService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.MessageService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 
@@ -32,50 +34,44 @@ public class ChatServlet extends HttpServlet {
         }
 
         String adIdStr = req.getParameter("ad_id");
-        String senderIdStr = req.getParameter("sender_id");
+        String recipientIdStr = req.getParameter("recipient_id"); // sender_id
         if (req.getParameter("format") != null && req.getParameter("format").equals("json")) {
             resp.setContentType("application/json");
 
             JSONObject jsonResponse = new JSONObject();
 
             int adId = 0;
-            int senderId = 0;
+            int recipientId = 0;
             try {
                 adId = Integer.parseInt(adIdStr);
-                senderId = Integer.parseInt(senderIdStr);
+                recipientId = Integer.parseInt(recipientIdStr);
             } catch (NumberFormatException | NullPointerException e) {
                 jsonResponse.put("wrong_id", true);
                 resp.getWriter().write(jsonResponse.toString());
                 return;
             }
-            List<MessageDto> messages = messageService.getAllOfAdvertisementAndUser(adId, senderId);
+            List<MessageDto> messages = messageService.getAllOfAdvertisementAndUser(adId, recipientId);
             jsonResponse.put("messages", messages);
-            jsonResponse.put("senderId", senderId);
+            jsonResponse.put("recipientId", recipientId);
             resp.getWriter().write(jsonResponse.toString());
         } else {
             int adId = 0;
+            int recipientId = 0;
             try {
                 adId = Integer.parseInt(adIdStr);
+                recipientId = Integer.parseInt(recipientIdStr);
             } catch (NumberFormatException | NullPointerException e) {
-                resp.sendRedirect(req.getContextPath() + "/advertisements/my");
+                resp.sendRedirect(req.getContextPath() + "/chats");
                 return;
             }
 
-            int senderId = 0;
-            try {
-                senderId = Integer.parseInt(senderIdStr);
-            } catch (NumberFormatException | NullPointerException e) {
-                List<UserDto> chats = messageService.getAllRecipientsOfAdvertisement(adId, user.getId());
-                req.setAttribute("adId", adId);
-                req.setAttribute("chats", chats);
-                req.getRequestDispatcher("/msgsenders.ftl").forward(req, resp);
-                return;
-            }
-
-            List<MessageDto> messages = messageService.getAllOfAdvertisementAndUser(adId, senderId);
+            AdvertisementService advertisementService = (AdvertisementService) getServletContext().getAttribute("advertisementService");
+            AdvertisementDto advertisement = advertisementService.get(adId);
+            UserDto recipient = userService.get(recipientId);
+            List<MessageDto> messages = messageService.getAllOfAdvertisementAndUser(adId, recipientId);
+            req.setAttribute("ad", advertisement);
+            req.setAttribute("recipient", recipient);
             req.setAttribute("messages", messages);
-            req.setAttribute("senderId", senderId);
-            req.setAttribute("adId", adId);
             req.getRequestDispatcher("/chat.ftl").forward(req, resp);
         }
     }
@@ -93,7 +89,7 @@ public class ChatServlet extends HttpServlet {
             jsonResponse.put("unauthorized", true);
             resp.getWriter().write(jsonResponse.toString());
         } else {
-            int recipientId = Integer.parseInt(req.getParameter("toUserId"));
+            int recipientId = Integer.parseInt(req.getParameter("recipientId"));
             int adId = Integer.parseInt(req.getParameter("adId"));
             MessageDao messageDao = (MessageDao) getServletContext().getAttribute("messageDao");
             MessageService messageService = (MessageService) getServletContext().getAttribute("messageService");

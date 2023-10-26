@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="card-body">
                                         <#list users[ad?index] as user>
-                                            <a href="${contextPath}/chat?ad_id=${ad.id}&sender_id=${user.id}"
+                                            <a href="${contextPath}/chat?ad_id=${ad.id}&recipient_id=${user.id}"
                                                style="text-decoration: none; --bs-link-color-rgb: var(--bs-body-color-rgb)">
                                                 <div class="d-flex justify-content-between align-items-center <#if user?index != 0>mt-3</#if>">
                                                     <div>
@@ -88,7 +88,7 @@
                 <h2>Other advertisements</h2>
                 <div>
                     <#list otherAdvertisements as ad>
-                        <a href="${contextPath}/chat?ad_id=${ad.id}&sender_id=${ad.seller.id}"
+                        <a href="${contextPath}/chat?ad_id=${ad.id}&recipient_id=${ad.seller.id}"
                            style="text-decoration: none">
                             <div class="card mb-2">
                                 <div class="row g-0">

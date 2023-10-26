@@ -6,12 +6,12 @@ import java.util.Objects;
 public class MessageDto {
     private UserDto sender;
     private String message;
-    private Timestamp sentTs;
+    private String sentDateTime;
 
-    public MessageDto(UserDto sender, String message, Timestamp sentTs) {
+    public MessageDto(UserDto sender, String message, String sentDateTime) {
         this.sender = sender;
         this.message = message;
-        this.sentTs = sentTs;
+        this.sentDateTime = sentDateTime;
     }
 
     public UserDto getSender() {
@@ -30,12 +30,12 @@ public class MessageDto {
         this.message = message;
     }
 
-    public Timestamp getSentTs() {
-        return sentTs;
+    public String getSentDateTime() {
+        return sentDateTime;
     }
 
-    public void setSentTs(Timestamp sentTs) {
-        this.sentTs = sentTs;
+    public void setSentDateTime(String sentDateTime) {
+        this.sentDateTime = sentDateTime;
     }
 
     @Override
@@ -43,12 +43,12 @@ public class MessageDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessageDto that = (MessageDto) o;
-        return Objects.equals(getSender(), that.getSender()) && Objects.equals(getMessage(), that.getMessage()) && Objects.equals(getSentTs(), that.getSentTs());
+        return Objects.equals(getSender(), that.getSender()) && Objects.equals(getMessage(), that.getMessage()) && Objects.equals(getSentDateTime(), that.getSentDateTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getSender(), getMessage(), getSentTs());
+        return Objects.hash(getSender(), getMessage(), getSentDateTime());
     }
 
     @Override
