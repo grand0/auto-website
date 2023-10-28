@@ -27,7 +27,7 @@ public class HomeServlet extends HttpServlet {
         }
 
         AdvertisementService advertisementService = (AdvertisementService) getServletContext().getAttribute("advertisementService");
-        List<AdvertisementDto> advertisements = advertisementService.getAll();
+        List<AdvertisementDto> advertisements = advertisementService.getRecent();
         req.setAttribute("advertisements", advertisements);
 
         req.getRequestDispatcher("index.ftl").forward(req, resp);

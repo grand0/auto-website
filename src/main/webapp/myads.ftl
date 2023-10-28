@@ -51,7 +51,10 @@
     <h1 class="text-center my-3">My advertisements</h1>
 
     <div class="container">
-        <a href="${contextPath}/advertisements/new" class="btn btn-outline-primary mb-3" style="width: 100%">Create an advertisement</a>
+        <a href="${contextPath}/advertisements/new" class="btn btn-outline-primary mb-3" style="width: 100%">
+            <i class="bi bi-plus-lg me-1"></i>
+            <span>Create an advertisement</span>
+        </a>
         <#if advertisements?size != 0>
             <#list advertisements as ad>
                 <div class="card mb-2">

@@ -14,12 +14,10 @@
             $("#filter-collapse-btn").on("click", function () {
                 if ($(this).hasClass("collapsed")) { // collapse was collapsed
                     $(this)
-                        .text("Show filters")
                         .removeClass("btn-primary")
                         .addClass("btn-outline-primary")
                 } else {
                     $(this)
-                        .text("Hide filters")
                         .removeClass("btn-outline-primary")
                         .addClass("btn-primary")
                 }
@@ -199,7 +197,8 @@
 
     <div class="container">
         <button id="filter-collapse-btn" class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filter-collapse">
-            Show filters
+            <i class="bi bi-filter me-1"></i>
+            <span>Filters</span>
         </button>
 
         <div class="collapse" id="filter-collapse">

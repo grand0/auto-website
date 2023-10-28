@@ -49,6 +49,21 @@ public class AdvertisementDao implements Dao<Advertisement> {
         }
     }
 
+    public List<Advertisement> getRecent() {
+        try {
+            String sql = "SELECT * FROM advertisements ORDER BY publication_ts DESC LIMIT 10;";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet set = statement.executeQuery();
+            List<Advertisement> advertisements = new ArrayList<>();
+            while (set.next()) {
+                advertisements.add(getFromResultSet(set));
+            }
+            return advertisements;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<Advertisement> getAllWithFilter(AdvertisementFilter filter) {
         try {
             StringBuilder sb = new StringBuilder(
