@@ -51,7 +51,10 @@
     <h1 class="text-center my-3">Garage</h1>
 
     <div class="container">
-        <a href="${contextPath}/garage/new" class="btn btn-outline-primary mb-3" style="width: 100%">Add a car</a>
+        <a href="${contextPath}/garage/new" class="btn btn-outline-primary mb-3" style="width: 100%">
+            <i class="bi bi-plus-lg me-1"></i>
+            <span>Add a car</span>
+        </a>
         <#if cars?size != 0>
             <#list cars as car>
                 <div class="card mb-2">

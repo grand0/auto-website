@@ -4,7 +4,7 @@
 
 <#macro content>
 
-    <div class="text-center my-5">
+    <div class="text-center" style="margin-top: 100px; margin-bottom: 100px">
         <h1>Welcome to buy<span style="color: red">car</span>!</h1>
         <p>Place to buy and sell used cars</p>
     </div>

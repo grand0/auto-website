@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface AdvertisementService {
     List<AdvertisementDto> getAll();
+    List<AdvertisementDto> getRecent();
     List<AdvertisementDto> getAllWithFilter(AdvertisementFilter filter);
 
     AdvertisementDto get(int id);

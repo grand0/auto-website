@@ -35,6 +35,11 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
+    public List<AdvertisementDto> getRecent() {
+        return advertisementDao.getRecent().stream().map(this::toAdvertisementDto).collect(Collectors.toList());
+    }
+
+    @Override
     public List<AdvertisementDto> getAllWithFilter(AdvertisementFilter filter) {
         return advertisementDao.getAllWithFilter(filter).stream()
                 .map(this::toAdvertisementDto)

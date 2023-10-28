@@ -33,8 +33,14 @@
 
         <#if user.id == profile.id>
             <div class="row justify-content-center mb-3">
-                <a href="${contextPath}/profile_edit" class="btn btn-outline-primary col-auto me-3">Edit profile</a>
-                <a href="${contextPath}/auth?action=logout" class="btn btn-outline-danger col-auto">Log out</a>
+                <a href="${contextPath}/profile_edit" class="btn btn-outline-primary icon-link col-auto me-3">
+                    <i class="bi bi-pencil"></i>
+                    <span>Edit profile</span>
+                </a>
+                <a href="${contextPath}/auth?action=logout" class="btn btn-outline-danger icon-link col-auto">
+                    <i class="bi bi-box-arrow-left"></i>
+                    <span>Log out</span>
+                </a>
             </div>
         </#if>
 
