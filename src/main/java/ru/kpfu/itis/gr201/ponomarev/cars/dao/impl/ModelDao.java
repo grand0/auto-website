@@ -50,6 +50,24 @@ public class ModelDao implements Dao<Model> {
         }
     }
 
+    public List<Model> search(String make, String query) {
+        try {
+            String sql = "SELECT models.id, make_id, model FROM models JOIN makes on models.make_id = makes.id WHERE (? IS NULL OR make = ?) AND (model ILIKE (? || '%'));";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, make);
+            statement.setString(2, make);
+            statement.setString(3, query);
+            ResultSet set = statement.executeQuery();
+            List<Model> models = new ArrayList<>();
+            while (set.next()) {
+                models.add(getFromResultSet(set));
+            }
+            return models;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public List<Model> getAll() {
         try {

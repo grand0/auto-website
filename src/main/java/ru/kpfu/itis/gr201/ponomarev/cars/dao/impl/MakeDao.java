@@ -49,6 +49,22 @@ public class MakeDao implements Dao<Make> {
         }
     }
 
+    public List<Make> search(String query) {
+        try {
+            String sql = "SELECT * FROM makes WHERE make ILIKE (? || '%');";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, query);
+            ResultSet set = statement.executeQuery();
+            List<Make> makes = new ArrayList<>();
+            while (set.next()) {
+                makes.add(getFromResultSet(set));
+            }
+            return makes;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public List<Make> getAll() {
         try {

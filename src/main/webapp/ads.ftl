@@ -28,6 +28,75 @@
                 $("input[type=checkbox]").prop("checked", "")
             })
 
+            $("#make-input")
+                .on("focusin", function () {
+                    $("#make-hints-list").removeAttr("hidden")
+                })
+                .on("focusout", function () {
+                    setTimeout(() => $("#make-hints-list").attr("hidden", "true"), 300)
+                })
+                .on("input", function () {
+                    const makeHintsList = $("#make-hints-list")
+                    makeHintsList.empty()
+                    if ($(this).val().trim()) {
+                        $.get(
+                            "${contextPath}/hints",
+                            {
+                                "action": "getMakes",
+                                "query": $(this).val().trim()
+                            },
+                            function (response) {
+                                $.each(response.makes, function (index, make) {
+                                    const btn = $("<button></button>")
+                                        .attr("type", "button")
+                                        .addClass("list-group-item")
+                                        .addClass("list-group-item-action")
+                                        .text(make)
+                                        .on("click", function () {
+                                            $("#make-input").val(make)
+                                        })
+                                    makeHintsList.append(btn)
+                                })
+                            }
+                        )
+                    }
+                })
+
+            $("#model-input")
+                .on("focusin", function () {
+                    $("#model-hints-list").removeAttr("hidden")
+                })
+                .on("focusout", function () {
+                    setTimeout(() => $("#model-hints-list").attr("hidden", "true"), 300)
+                })
+                .on("input", function () {
+                    const modelHintsList = $("#model-hints-list")
+                    modelHintsList.empty()
+                    if ($(this).val().trim()) {
+                        $.get(
+                            "${contextPath}/hints",
+                            {
+                                "action": "getModels",
+                                "make": $("#make-input").val().trim(),
+                                "query": $(this).val().trim()
+                            },
+                            function (response) {
+                                $.each(response.models, function (index, model) {
+                                    const btn = $("<button></button>")
+                                        .attr("type", "button")
+                                        .addClass("list-group-item")
+                                        .addClass("list-group-item-action")
+                                        .text(model)
+                                        .on("click", function () {
+                                            $("#model-input").val(model)
+                                        })
+                                    modelHintsList.append(btn)
+                                })
+                            }
+                        )
+                    }
+                })
+
             $("#filter-btn").on("click", function () {
                 const makeInput = $("#make-input")
                 const modelInput = $("#model-input")
@@ -204,13 +273,15 @@
         <div class="collapse" id="filter-collapse">
             <div class="card card-body mb-3">
                 <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-md-3 position-relative">
                         <label for="make-input" class="form-label">Make</label>
                         <input type="text" class="form-control" id="make-input" value="${filter.make!}">
+                        <ul id="make-hints-list" class="list-group position-absolute top-100" style="height: 300px; overflow: auto" hidden></ul>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 position-relative">
                         <label for="model-input" class="form-label">Model</label>
                         <input type="text" class="form-control" id="model-input" value="${filter.model!}">
+                        <ul id="model-hints-list" class="list-group position-absolute top-100" style="height: 300px; overflow: auto" hidden></ul>
                     </div>
                     <div class="col-md-3">
                         <label for="year-from-input" class="form-label">Year from</label>

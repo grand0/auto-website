@@ -151,6 +151,75 @@
                         .removeClass("is-invalid")
                 }
             })
+
+            $("#make-input")
+                .on("focusin", function () {
+                    $("#make-hints-list").removeAttr("hidden")
+                })
+                .on("focusout", function () {
+                    setTimeout(() => $("#make-hints-list").attr("hidden", "true"), 300)
+                })
+                .on("input", function () {
+                    const makeHintsList = $("#make-hints-list")
+                    makeHintsList.empty()
+                    if ($(this).val().trim()) {
+                        $.get(
+                            "${contextPath}/hints",
+                            {
+                                "action": "getMakes",
+                                "query": $(this).val().trim()
+                            },
+                            function (response) {
+                                $.each(response.makes, function (index, make) {
+                                    const btn = $("<button></button>")
+                                        .attr("type", "button")
+                                        .addClass("list-group-item")
+                                        .addClass("list-group-item-action")
+                                        .text(make)
+                                        .on("click", function () {
+                                            $("#make-input").val(make)
+                                        })
+                                    makeHintsList.append(btn)
+                                })
+                            }
+                        )
+                    }
+                })
+
+            $("#model-input")
+                .on("focusin", function () {
+                    $("#model-hints-list").removeAttr("hidden")
+                })
+                .on("focusout", function () {
+                    setTimeout(() => $("#model-hints-list").attr("hidden", "true"), 300)
+                })
+                .on("input", function () {
+                    const modelHintsList = $("#model-hints-list")
+                    modelHintsList.empty()
+                    if ($(this).val().trim()) {
+                        $.get(
+                            "${contextPath}/hints",
+                            {
+                                "action": "getModels",
+                                "make": $("#make-input").val().trim(),
+                                "query": $(this).val().trim()
+                            },
+                            function (response) {
+                                $.each(response.models, function (index, model) {
+                                    const btn = $("<button></button>")
+                                        .attr("type", "button")
+                                        .addClass("list-group-item")
+                                        .addClass("list-group-item-action")
+                                        .text(model)
+                                        .on("click", function () {
+                                            $("#model-input").val(model)
+                                        })
+                                    modelHintsList.append(btn)
+                                })
+                            }
+                        )
+                    }
+                })
         })
     </script>
 
@@ -158,13 +227,15 @@
 
     <form class="container">
         <div class="row g-3">
-            <div class="col-5">
+            <div class="col-5 position-relative">
                 <label for="make-input" class="form-label">Make</label>
                 <input type="text" class="form-control" id="make-input" placeholder="Ford">
+                <ul id="make-hints-list" class="list-group position-absolute top-100" style="height: 300px; overflow: auto" hidden></ul>
             </div>
-            <div class="col-5">
+            <div class="col-5 position-relative">
                 <label for="model-input" class="form-label">Model</label>
                 <input type="text" class="form-control" id="model-input" placeholder="F150">
+                <ul id="model-hints-list" class="list-group position-absolute top-100" style="height: 300px; overflow: auto" hidden></ul>
             </div>
             <div class="col-2">
                 <label for="year-input" class="form-label">Year</label>
