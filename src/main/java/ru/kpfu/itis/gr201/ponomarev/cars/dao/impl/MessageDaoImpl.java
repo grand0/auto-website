@@ -90,6 +90,36 @@ public class MessageDaoImpl implements MessageDao {
         }
     }
 
+    @Override
+    public void setAllAsReadForAdvertisementAndRecipient(int advertisementId, int recipientId) {
+        try {
+            String sql = "UPDATE messages SET is_read = true WHERE advertisement_id = ? AND recipient_id = ?;";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, advertisementId);
+            statement.setInt(2, recipientId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Message> getUnreadMessagesOfRecipient(int recipientId) {
+        try {
+            String sql = "SELECT * FROM messages WHERE recipient_id = ? AND is_read = false;";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, recipientId);
+            ResultSet set = statement.executeQuery();
+            List<Message> messages = new ArrayList<>();
+            while (set.next()) {
+                messages.add(getFromResultSet(set));
+            }
+            return messages;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private Message getFromResultSet(ResultSet set) throws SQLException {
         return new Message(
                 set.getInt("id"),
@@ -97,7 +127,8 @@ public class MessageDaoImpl implements MessageDao {
                 set.getInt("recipient_id"),
                 set.getInt("advertisement_id"),
                 set.getString("message"),
-                set.getTimestamp("sent_ts")
+                set.getTimestamp("sent_ts"),
+                set.getBoolean("is_read")
         );
     }
 }

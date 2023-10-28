@@ -13,14 +13,24 @@
                 .text(msg.message)
             let sent = $("<span></span>")
                 .addClass("text-secondary")
-                .text(msg.sentDateTime)
+                .text(msg.sentDateTime + " ")
+            let check = $("<i></i>")
+                .addClass("bi")
+            if (msg.read) {
+                check.addClass("bi-check-all")
+            } else {
+                check.addClass("bi-check")
+            }
             let block = $("<div></div>")
-            return block
                 .addClass("mb-3")
                 .append(name).append($("<br>"))
                 .append(msgText).append($("<br>"))
                 .append(sent)
                 .attr("style", "overflow-wrap: break-word");
+            if (msg.sender.id == ${user.id}) {
+                block.append(check)
+            }
+            return block
         }
 
         $(document).ready(function() {
@@ -126,6 +136,13 @@
                                 <strong>${msg.sender}</strong><br>
                                 <span>${msg}</span><br>
                                 <span class="text-secondary">${msg.sentDateTime}</span>
+                                <#if msg.sender.id == user.id>
+                                    <#if msg.isRead()>
+                                        <i class="bi bi-check-all"></i>
+                                    <#else>
+                                        <i class="bi bi-check"></i>
+                                    </#if>
+                                </#if>
                             </div>
                         </#list>
                     </div>

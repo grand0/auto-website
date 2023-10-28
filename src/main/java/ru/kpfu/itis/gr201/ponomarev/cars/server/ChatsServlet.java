@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @WebServlet(name = "chatsServlet", urlPatterns = "/chats")
@@ -34,9 +36,14 @@ public class ChatsServlet extends HttpServlet {
                 .collect(Collectors.toList());
         List<AdvertisementDto> otherAdvertisements = messageService.getAllAdvertisementsToWhichUserSentMessage(user.getId());
 
+        Map<String, List<Integer>> unreadAdIdsToUserIds = new HashMap<>();
+        messageService.getAdvertisementIdsAndSenderIdsWithUnreadMessages(user.getId())
+                        .forEach((k, v) -> unreadAdIdsToUserIds.put(String.valueOf(k), v));
+
         req.setAttribute("myAdvertisements", myAdvertisements);
         req.setAttribute("users", users);
         req.setAttribute("otherAdvertisements", otherAdvertisements);
+        req.setAttribute("unreadMap", unreadAdIdsToUserIds);
         req.getRequestDispatcher("/chats.ftl").forward(req, resp);
     }
 }

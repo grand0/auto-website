@@ -10,22 +10,25 @@ public class Message {
     private int advertisementId;
     private String message;
     private Timestamp sentTs;
+    private boolean isRead;
 
-    public Message(int senderId, int recipientId, int advertisementId, String message, Timestamp sentTs) {
+    public Message(int senderId, int recipientId, int advertisementId, String message, Timestamp sentTs, boolean isRead) {
         this.senderId = senderId;
         this.recipientId = recipientId;
         this.advertisementId = advertisementId;
         this.message = message;
         this.sentTs = sentTs;
+        this.isRead = isRead;
     }
 
-    public Message(int id, int senderId, int recipientId, int advertisementId, String message, Timestamp sentTs) {
+    public Message(int id, int senderId, int recipientId, int advertisementId, String message, Timestamp sentTs, boolean isRead) {
         this.id = id;
         this.senderId = senderId;
         this.recipientId = recipientId;
         this.advertisementId = advertisementId;
         this.message = message;
         this.sentTs = sentTs;
+        this.isRead = isRead;
     }
 
     public int getId() {
@@ -76,17 +79,12 @@ public class Message {
         this.sentTs = sentTs;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Message message1 = (Message) o;
-        return getId() == message1.getId() && getSenderId() == message1.getSenderId() && getRecipientId() == message1.getRecipientId() && getAdvertisementId() == message1.getAdvertisementId() && Objects.equals(getMessage(), message1.getMessage()) && Objects.equals(getSentTs(), message1.getSentTs());
+    public boolean isRead() {
+        return isRead;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getSenderId(), getRecipientId(), getAdvertisementId(), getMessage(), getSentTs());
+    public void setRead(boolean read) {
+        isRead = read;
     }
 
     @Override
