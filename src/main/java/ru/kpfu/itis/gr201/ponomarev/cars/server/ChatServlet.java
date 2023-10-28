@@ -1,5 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.server;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.MessageDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.AdvertisementDto;
@@ -50,7 +51,7 @@ public class ChatServlet extends HttpServlet {
                 resp.getWriter().write(jsonResponse.toString());
                 return;
             }
-            List<MessageDto> messages = messageService.getAllOfAdvertisementAndUser(adId, recipientId);
+            List<MessageDto> messages = messageService.readAllOfAdvertisementAndUser(adId, user.getId());
             jsonResponse.put("messages", messages);
             jsonResponse.put("recipientId", recipientId);
             resp.getWriter().write(jsonResponse.toString());
@@ -68,7 +69,7 @@ public class ChatServlet extends HttpServlet {
             AdvertisementService advertisementService = (AdvertisementService) getServletContext().getAttribute("advertisementService");
             AdvertisementDto advertisement = advertisementService.get(adId);
             UserDto recipient = userService.get(recipientId);
-            List<MessageDto> messages = messageService.getAllOfAdvertisementAndUser(adId, recipientId);
+            List<MessageDto> messages = messageService.readAllOfAdvertisementAndUser(adId, user.getId());
             req.setAttribute("ad", advertisement);
             req.setAttribute("recipient", recipient);
             req.setAttribute("messages", messages);
@@ -98,7 +99,8 @@ public class ChatServlet extends HttpServlet {
                     recipientId,
                     adId,
                     req.getParameter("message"),
-                    Timestamp.valueOf(LocalDateTime.now())
+                    Timestamp.valueOf(LocalDateTime.now()),
+                    false
             );
             messageDao.send(msg);
             MessageDto messageDto = messageService.toMessageDto(msg);

@@ -11,6 +11,11 @@ import ru.kpfu.itis.gr201.ponomarev.cars.service.MessageService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class MessageServiceImpl implements MessageService {
@@ -40,8 +45,12 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageDto> getAllOfAdvertisementAndUser(int advertisementId, int userId) {
-        return messageDao.getAllOfAdvertisementAndUser(advertisementId, userId).stream().map(this::toMessageDto).collect(Collectors.toList());
+    public List<MessageDto> readAllOfAdvertisementAndUser(int advertisementId, int userId) {
+        messageDao.setAllAsReadForAdvertisementAndRecipient(advertisementId, userId);
+        return messageDao.getAllOfAdvertisementAndUser(advertisementId, userId)
+                .stream()
+                .map(this::toMessageDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -54,12 +63,45 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public List<Integer> getAdvertisementIdsWithUnreadMessages(int userId) {
+        return messageDao.getUnreadMessagesOfRecipient(userId)
+                .stream()
+                .map(Message::getAdvertisementId)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<Integer, List<Integer>> getAdvertisementIdsAndSenderIdsWithUnreadMessages(int userId) {
+        return messageDao.getUnreadMessagesOfRecipient(userId)
+                .stream()
+                .collect(
+                        HashMap::new,
+                        (HashMap<Integer, List<Integer>> map, Message msg) -> map.compute(
+                                msg.getAdvertisementId(),
+                                (k, v) -> {
+                                    if (v == null) {
+                                        List<Integer> list = new ArrayList<>();
+                                        list.add(msg.getRecipientId());
+                                        return list;
+                                    } else {
+                                        v.add(msg.getRecipientId());
+                                        return v;
+                                    }
+                                }
+                        ),
+                        HashMap::putAll
+                );
+    }
+
+    @Override
     public MessageDto toMessageDto(Message message) {
         UserDto sender = userService.get(message.getSenderId());
         return new MessageDto(
                 sender,
                 message.getMessage(),
-                message.getSentTs().toString()
+                message.getSentTs().toString(),
+                message.isRead()
         );
     }
 }

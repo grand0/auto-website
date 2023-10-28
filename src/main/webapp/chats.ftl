@@ -47,22 +47,25 @@
                                         <h5 class="mt-2">${ad}</h5>
                                     </div>
                                     <div class="card-body">
-                                        <#list users[ad?index] as user>
-                                            <a href="${contextPath}/chat?ad_id=${ad.id}&recipient_id=${user.id}"
+                                        <#list users[ad?index] as chatUser>
+                                            <a href="${contextPath}/chat?ad_id=${ad.id}&recipient_id=${chatUser.id}"
                                                style="text-decoration: none; --bs-link-color-rgb: var(--bs-body-color-rgb)">
-                                                <div class="d-flex justify-content-between align-items-center <#if user?index != 0>mt-3</#if>">
+                                                <div class="d-flex justify-content-between align-items-center <#if chatUser?index != 0>mt-3</#if>">
                                                     <div>
-                                                        <#if (user.avatarUrl)??>
-                                                            <img src="${user.getRoundCroppedAvatarUrl()}" alt="user avatar" class="me-2" width="50" height="50">
+                                                        <#if (chatUser.avatarUrl)??>
+                                                            <img src="${chatUser.getRoundCroppedAvatarUrl()}" alt="user avatar" class="me-2" width="50" height="50">
                                                         <#else>
                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" width="50" height="50" class="bi bi-person-circle me-2">
                                                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
                                                                 <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
                                                             </svg>
                                                         </#if>
-                                                        <span>${user}</span>
+                                                        <span>${chatUser}</span>
                                                     </div>
-                                                    <div>
+                                                    <div class="d-flex align-items-center">
+                                                        <#if unreadMap[(ad.id)?c]?? && unreadMap[(ad.id)?c]?seq_contains(user.id)>
+                                                            <span class="p-2 bg-danger rounded-circle me-3"></span>
+                                                        </#if>
                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                              width="32"
                                                              height="32"
@@ -142,7 +145,10 @@
                                                     </#if>
                                                     <span>${ad.seller}</span>
                                                 </div>
-                                                <div>
+                                                <div class="d-flex align-items-center">
+                                                    <#if unreadMap[(ad.id)?c]?? && unreadMap[(ad.id)?c]?seq_contains(user.id)>
+                                                        <span class="p-2 bg-danger rounded-circle me-3"></span>
+                                                    </#if>
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                          width="32" height="32"
                                                          fill="currentColor"
