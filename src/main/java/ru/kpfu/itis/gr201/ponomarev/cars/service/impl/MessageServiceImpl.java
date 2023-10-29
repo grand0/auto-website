@@ -9,7 +9,9 @@ import ru.kpfu.itis.gr201.ponomarev.cars.model.Message;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.AdvertisementService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.MessageService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
+import ru.kpfu.itis.gr201.ponomarev.cars.util.Constants;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
@@ -100,7 +102,7 @@ public class MessageServiceImpl implements MessageService {
         return new MessageDto(
                 sender,
                 message.getMessage(),
-                message.getSentTs().toString(),
+                message.getSentTs().toLocalDateTime().format(Constants.DATE_TIME_FORMATTER),
                 message.isRead()
         );
     }

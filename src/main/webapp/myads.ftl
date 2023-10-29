@@ -48,7 +48,7 @@
         })
     </script>
 
-    <h1 class="text-center my-3">My advertisements</h1>
+    <h1 class="page-title">My advertisements</h1>
 
     <div class="container">
         <a href="${contextPath}/advertisements/new" class="btn btn-outline-primary mb-3" style="width: 100%">

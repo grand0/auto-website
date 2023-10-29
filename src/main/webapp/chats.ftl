@@ -3,7 +3,7 @@
 <#macro title>Chats</#macro>
 
 <#macro content>
-    <h1 class="text-center my-3">Chats</h1>
+    <h1 class="page-title">Chats</h1>
 
     <div class="container">
         <div class="row">

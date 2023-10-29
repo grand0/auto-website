@@ -46,7 +46,7 @@
         })
     </script>
 
-    <h1 class="text-center my-3">Bookmarks</h1>
+    <h1 class="page-title">Bookmarks</h1>
 
     <div class="container">
         <#list advertisements as ad>

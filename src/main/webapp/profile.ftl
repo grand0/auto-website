@@ -3,7 +3,7 @@
 <#macro title>Profile</#macro>
 
 <#macro content>
-    <h1 class="text-center my-3">Profile</h1>
+    <h1 class="page-title">Profile</h1>
 
     <#if profile_edited??>
         <p class="success">

@@ -262,7 +262,7 @@
         }
     </script>
 
-    <h1 class="text-center my-3">Advertisements</h1>
+    <h1 class="page-title">Advertisements</h1>
 
     <div class="container">
         <button id="filter-collapse-btn" class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filter-collapse">

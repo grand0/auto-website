@@ -11,10 +11,6 @@ import java.io.IOException;
 
 @WebFilter(filterName = "authFilter", urlPatterns = "/*")
 public class AuthFilter extends HttpFilter {
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        super.init(filterConfig);
-    }
 
     @Override
     public void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
@@ -45,10 +41,5 @@ public class AuthFilter extends HttpFilter {
         req.setAttribute("user", userService.getAuthedUserDto(req, resp));
 
         chain.doFilter(req, resp);
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
     }
 }

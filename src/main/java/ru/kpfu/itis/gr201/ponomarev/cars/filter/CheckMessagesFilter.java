@@ -16,10 +16,6 @@ import java.util.List;
 
 @WebFilter(filterName = "checkMessagesFilter", urlPatterns = "/*")
 public class CheckMessagesFilter extends HttpFilter {
-    @Override
-    public void init() throws ServletException {
-        super.init();
-    }
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
@@ -32,10 +28,5 @@ public class CheckMessagesFilter extends HttpFilter {
         }
 
         chain.doFilter(req, resp);
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
     }
 }

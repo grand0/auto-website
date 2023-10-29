@@ -184,7 +184,7 @@
         })
     </script>
 
-    <h1 class="text-center my-3">Register</h1>
+    <h1 class="page-title">Register</h1>
 
     <p class="alert alert-danger m-3" id="unknown-error-alert" hidden>
         <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>

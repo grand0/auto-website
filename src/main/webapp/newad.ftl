@@ -200,7 +200,7 @@
         })
     </script>
 
-    <h1 class="text-center my-3">New advertisement</h1>
+    <h1 class="page-title">New advertisement</h1>
 
     <form class="container">
         <div class="row g-3">

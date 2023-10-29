@@ -1,0 +1,28 @@
+* {
+    font-family: Rubik, sans-serif;
+}
+
+.icon-link {
+    align-items: baseline;
+}
+
+.page-title {
+    text-align: center;
+    margin: 40px 0 20px 0;
+}
+
+.message {
+    overflow-wrap: break-word;
+    padding: 12px;
+    border-radius: 0.375rem;
+    width: fit-content;
+    margin-bottom: 12px;
+}
+
+.my-message {
+    background-color: var(--bs-primary-bg-subtle);
+}
+
+.others-message {
+    background-color: var(--bs-info-bg-subtle);
+}

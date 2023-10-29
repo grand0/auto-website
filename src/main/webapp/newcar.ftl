@@ -223,7 +223,7 @@
         })
     </script>
 
-    <h1 class="text-center my-3">New car</h1>
+    <h1 class="page-title">New car</h1>
 
     <form class="container">
         <div class="row g-3">

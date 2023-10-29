@@ -48,7 +48,7 @@
         })
     </script>
 
-    <h1 class="text-center my-3">Garage</h1>
+    <h1 class="page-title">Garage</h1>
 
     <div class="container">
         <a href="${contextPath}/garage/new" class="btn btn-outline-primary mb-3" style="width: 100%">

@@ -6,10 +6,36 @@
 
 <#macro content>
     <script>
+        function sendMessage() {
+            let msgInput = $("#msg-input")
+            if (msgInput.val()) {
+                let msg = msgInput.val()
+                msgInput.val("")
+                $("#send-btn").attr("disabled", "true")
+                $.post(
+                    "${contextPath}/chat",
+                    {
+                        "adId": ${ad.id},
+                        "recipientId": ${recipient.id},
+                        "message": msg
+                    },
+                    function (response) {
+                        if ("unauthorized" in response) {
+                            window.location.replace("${contextPath}/auth")
+                        }
+                        console.log(response)
+                        $("#messages-list").prepend(toMsgBlock(response.message))
+                    }
+                )
+            }
+        }
+
         function toMsgBlock(msg) {
             let name = $("<strong></strong>")
+                .addClass("d-block")
                 .text(msg.sender.firstName + " " + msg.sender.lastName)
             let msgText = $("<span></span>")
+                .addClass("d-block")
                 .text(msg.message)
             let sent = $("<span></span>")
                 .addClass("text-secondary")
@@ -22,13 +48,16 @@
                 check.addClass("bi-check")
             }
             let block = $("<div></div>")
-                .addClass("mb-3")
-                .append(name).append($("<br>"))
-                .append(msgText).append($("<br>"))
+                .addClass("message")
+                .append(name)
+                .append(msgText)
                 .append(sent)
-                .attr("style", "overflow-wrap: break-word");
             if (msg.sender.id == ${user.id}) {
-                block.append(check)
+                block
+                    .append(check)
+                    .addClass("my-message")
+            } else {
+                block.addClass("others-message")
             }
             return block
         }
@@ -51,43 +80,25 @@
             let msgList = $("#messages-list")
             msgList.scrollTop(msgList[0].scrollHeight)
 
-            $("#send-btn").on("click", function () {
-                let msgInput = $("#msg-input")
-                if (!msgInput.val()) {
-                    msgInput.addClass("is-invalid")
-                } else {
-                    let msg = msgInput.val()
-                    msgInput.val("")
-                    $(this).attr("disabled", "true")
-                    $.post(
-                        "${contextPath}/chat",
-                        {
-                            "adId": ${ad.id},
-                            "recipientId": ${recipient.id},
-                            "message": msg
-                        },
-                        function (response) {
-                            if ("unauthorized" in response) {
-                                window.location.replace("${contextPath}/auth")
-                            }
-                            console.log(response)
-                            $("#messages-list").prepend(toMsgBlock(response.message))
-                        }
-                    )
-                }
-            })
+            $("#send-btn").on("click", sendMessage)
 
-            $("#msg-input").on("input", function () {
-                if (!$(this).val()) {
-                    $("#send-btn").attr("disabled", "true")
-                } else {
-                    $("#send-btn").removeAttr("disabled")
-                }
-            })
+            $("#msg-input")
+                .on("input", function () {
+                    if (!$(this).val()) {
+                        $("#send-btn").attr("disabled", "true")
+                    } else {
+                        $("#send-btn").removeAttr("disabled")
+                    }
+                })
+                .on("keypress", (event) => {
+                    if (event.which === 13) {
+                        sendMessage()
+                    }
+                })
         })
     </script>
 
-    <h1 class="text-center my-3">Chat with <#if recipient.id == ad.seller.id>seller<#else>buyer</#if></h1>
+    <h1 class="page-title">Chat with <#if recipient.id == ad.seller.id>seller<#else>buyer</#if></h1>
 
     <div class="container mb-3">
         <div class="card">
@@ -132,9 +143,9 @@
                 <div style="overflow-y: scroll; overflow-x: auto; height: 50vh">
                     <div id="messages-list">
                         <#list messages as msg>
-                            <div class="mb-3" style="overflow-wrap: break-word">
-                                <strong>${msg.sender}</strong><br>
-                                <span>${msg}</span><br>
+                            <div class="message <#if msg.sender.id == user.id>my-message<#else>others-message</#if>">
+                                <strong class="d-block">${msg.sender}</strong>
+                                <span class="d-block">${msg}</span>
                                 <span class="text-secondary">${msg.sentDateTime}</span>
                                 <#if msg.sender.id == user.id>
                                     <#if msg.isRead()>
