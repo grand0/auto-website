@@ -1,7 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.model.filter;
 
 import ru.kpfu.itis.gr201.ponomarev.cars.model.*;
-import ru.kpfu.itis.gr201.ponomarev.cars.service.BookmarksService;
 
 import java.util.List;
 

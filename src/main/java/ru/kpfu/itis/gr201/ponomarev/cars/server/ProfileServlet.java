@@ -4,7 +4,6 @@ import ru.kpfu.itis.gr201.ponomarev.cars.dto.AdvertisementDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.CarDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.UserDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.AdvertisementService;
-import ru.kpfu.itis.gr201.ponomarev.cars.service.CarService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UsersCarsService;
 

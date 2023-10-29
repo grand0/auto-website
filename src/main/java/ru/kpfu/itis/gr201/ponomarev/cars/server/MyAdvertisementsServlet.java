@@ -1,7 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.server;
 
 import org.json.JSONObject;
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.UsersCarsDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.AdvertisementDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.AdvertisementDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.UserDto;

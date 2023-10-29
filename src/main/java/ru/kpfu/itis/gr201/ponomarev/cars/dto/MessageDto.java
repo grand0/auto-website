@@ -1,6 +1,5 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.dto;
 
-import java.sql.Timestamp;
 import java.util.Objects;
 
 public class MessageDto {

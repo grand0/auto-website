@@ -1,7 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.model;
 
 import java.sql.Timestamp;
-import java.util.Objects;
 
 public class Message {
     private int id;

@@ -1,6 +1,5 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.filter;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dto.AdvertisementDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.UserDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.MessageService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;

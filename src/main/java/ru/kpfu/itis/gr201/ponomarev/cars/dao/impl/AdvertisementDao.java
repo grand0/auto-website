@@ -8,8 +8,9 @@ import ru.kpfu.itis.gr201.ponomarev.cars.model.filter.AdvertisementSorting;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.DatabaseConnectionUtil;
 
 import java.sql.*;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class AdvertisementDao implements Dao<Advertisement> {
