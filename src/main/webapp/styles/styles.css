@@ -11,6 +11,21 @@
     margin: 40px 0 20px 0;
 }
 
+.navbar-brand {
+    font-size: 24px;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    --bs-link-color-rgb: var(--bs-body-color-rgb);
+}
+
+#theme-switcher {
+    font-size: 24px;
+}
+
+/* chat */
 .message {
     overflow-wrap: break-word;
     padding: 12px;

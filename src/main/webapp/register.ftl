@@ -1,5 +1,3 @@
-<#assign addJquery=true>
-
 <#include "base.ftl">
 
 <#macro title>Register</#macro>

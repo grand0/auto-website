@@ -2,28 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><@title/></title>
+    <title><@title/> / buycar</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="icon" type="image/png" href="${contextPath}/assets/img/favicon.png">
+
+    <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
 
+    <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="${contextPath}/styles/styles.css">
+    <!-- bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <#if addJquery??><script src="https://code.jquery.com/jquery-3.7.1.min.js"></script></#if>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <link rel="stylesheet" href="${contextPath}/styles/styles.css">
 </head>
 <body>
 
 <nav class="navbar sticky-top navbar-expand-md bg-body-tertiary">
     <div class="container">
         <a class="navbar-brand" href="${contextPath}/">
-            <span style="font-size: 24px">buy<span style="color: red">car</span></span>
+            <span>buy<span style="color: red">car</span></span>
         </a>
         <button
                 class="navbar-toggler"
@@ -50,7 +57,7 @@
                     </li>
                 </#if>
             </ul>
-            <div class="d-flex align-items-center" style="--bs-link-color-rgb: var(--bs-body-color-rgb);">
+            <div class="nav-buttons">
                 <#if user??>
                     <a href="${contextPath}/chats" class="me-3 position-relative">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
@@ -77,7 +84,8 @@
                     <a href="${contextPath}/register" class="btn btn-outline-primary me-2">Register</a>
                     <a href="${contextPath}/auth" class="btn btn-outline-secondary">Log in</a>
                 </#if>
-                <a href="#" id="theme-switcher" style="font-size: 24px; margin-left: 16px">
+                <div class="vr mx-3"></div>
+                <a href="#" id="theme-switcher">
                     <i class="bi bi-moon"></i>
                 </a>
             </div>
@@ -85,33 +93,7 @@
     </div>
 </nav>
 
-<script>
-    function getThemeCookieValue() {
-        return document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("theme="))
-            ?.split("=")[1];
-    }
-    if (getThemeCookieValue() === "dark") {
-        document.getElementsByTagName("html")[0].setAttribute("data-bs-theme", "dark")
-        document.getElementById("theme-switcher").firstElementChild.classList.add("bi-sun")
-        document.getElementById("theme-switcher").firstElementChild.classList.remove("bi-moon")
-    }
-
-    document.getElementById("theme-switcher").addEventListener("click", function () {
-        if (getThemeCookieValue() === "dark") {
-            document.cookie = "theme=light; path=/; max-age=31536000"
-            document.getElementsByTagName("html")[0].setAttribute("data-bs-theme", "light")
-            document.getElementById("theme-switcher").firstElementChild.classList.remove("bi-sun")
-            document.getElementById("theme-switcher").firstElementChild.classList.add("bi-moon")
-        } else {
-            document.cookie = "theme=dark; path=/; max-age=31536000"
-            document.getElementsByTagName("html")[0].setAttribute("data-bs-theme", "dark")
-            document.getElementById("theme-switcher").firstElementChild.classList.add("bi-sun")
-            document.getElementById("theme-switcher").firstElementChild.classList.remove("bi-moon")
-        }
-    })
-</script>
+<script src="${contextPath}/scripts/theme-switcher.js"></script>
 
 <div class="content">
     <@content/>
