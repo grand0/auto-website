@@ -39,5 +39,9 @@
             <!-- Nobody is allowed to visit these directly. -->
         </auth-constraint>
     </security-constraint>
+    
+    <error-page>
+        <location>/error</location>
+    </error-page>
 
 </web-app>
