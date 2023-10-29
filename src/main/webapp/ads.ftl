@@ -295,19 +295,31 @@
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <label for="engine-volume-from-input" class="form-label">Engine volume from</label>
-                        <input type="number" class="form-control" id="engine-volume-from-input" value="${filter.engineVolumeFrom!?c}">
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="engine-volume-from-input" value="${filter.engineVolumeFrom!?c}">
+                            <span class="input-group-text">L</span>
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <label for="engine-volume-to-input" class="form-label">Engine volume to</label>
-                        <input type="number" class="form-control" id="engine-volume-to-input" value="${filter.engineVolumeTo!?c}">
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="engine-volume-to-input" value="${filter.engineVolumeTo!?c}">
+                            <span class="input-group-text">L</span>
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <label for="horsepower-from-input" class="form-label">Horsepower from</label>
-                        <input type="number" class="form-control" id="horsepower-from-input" value="${filter.horsepowerFrom!?c}">
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="horsepower-from-input" value="${filter.horsepowerFrom!?c}">
+                            <span class="input-group-text">hp</span>
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <label for="horsepower-to-input" class="form-label">Horsepower to</label>
-                        <input type="number" class="form-control" id="horsepower-to-input" value="${filter.horsepowerTo!?c}">
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="horsepower-to-input" value="${filter.horsepowerTo!?c}">
+                            <span class="input-group-text">hp</span>
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -349,19 +361,31 @@
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <label for="price-from-input" class="form-label">Price from</label>
-                        <input type="number" class="form-control" id="price-from-input" value="${filter.priceFrom!?c}">
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" id="price-from-input" value="${filter.priceFrom!?c}">
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <label for="price-to-input" class="form-label">Price to</label>
-                        <input type="number" class="form-control" id="price-to-input" value="${filter.priceTo!?c}">
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" id="price-to-input" value="${filter.priceTo!?c}">
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <label for="mileage-from-input" class="form-label">Mileage from</label>
-                        <input type="number" class="form-control" id="mileage-from-input" value="${filter.mileageFrom!?c}">
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="mileage-from-input" value="${filter.mileageFrom!?c}">
+                            <span class="input-group-text">km</span>
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <label for="mileage-to-input" class="form-label">Mileage to</label>
-                        <input type="number" class="form-control" id="mileage-to-input" value="${filter.mileageTo!?c}">
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="mileage-to-input" value="${filter.mileageTo!?c}">
+                            <span class="input-group-text">km</span>
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3">
