@@ -1,6 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.dao.impl;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.Dao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.AdvertisementDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.*;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.filter.AdvertisementFilter;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class AdvertisementDao implements Dao<Advertisement> {
+public class AdvertisementDaoImpl implements AdvertisementDao {
 
     private final Connection connection = DatabaseConnectionUtil.getConnection();
 
@@ -50,6 +50,7 @@ public class AdvertisementDao implements Dao<Advertisement> {
         }
     }
 
+    @Override
     public List<Advertisement> getRecent() {
         try {
             String sql = "SELECT * FROM advertisements ORDER BY publication_ts DESC LIMIT 10;";
@@ -65,6 +66,7 @@ public class AdvertisementDao implements Dao<Advertisement> {
         }
     }
 
+    @Override
     public List<Advertisement> getAllWithFilter(AdvertisementFilter filter) {
         try {
             StringBuilder sb = new StringBuilder(
@@ -289,6 +291,7 @@ public class AdvertisementDao implements Dao<Advertisement> {
         }
     }
 
+    @Override
     public List<Advertisement> getAllOfUser(int userId) {
         try {
             String sql = "SELECT * FROM advertisements WHERE seller_id = ?;";
@@ -332,28 +335,6 @@ public class AdvertisementDao implements Dao<Advertisement> {
     }
 
     @Override
-    public void update(int id, Advertisement advertisement) throws SaveException {
-        try {
-            String sql = "UPDATE advertisements SET (car_id, description, price, seller_id, publication_ts, mileage, car_color, condition, owners, exchange_allowed, view_count) = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, advertisement.getCarId());
-            statement.setString(2, advertisement.getDescription());
-            statement.setInt(3, advertisement.getPrice());
-            statement.setInt(4, advertisement.getSellerId());
-            statement.setTimestamp(5, advertisement.getPublicationTs());
-            statement.setInt(6, advertisement.getMileage());
-            statement.setString(7, advertisement.getCarColor());
-            statement.setString(8, advertisement.getCondition().getCondition());
-            statement.setInt(9, advertisement.getOwners());
-            statement.setBoolean(10, advertisement.isExchangeAllowed());
-            statement.setInt(11, advertisement.getViewCount());
-            statement.setInt(12, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void incrementViewCount(int id) {
         try {
             String sql = "UPDATE advertisements SET view_count = view_count + 1 WHERE id = ?;";
@@ -365,6 +346,7 @@ public class AdvertisementDao implements Dao<Advertisement> {
         }
     }
 
+    @Override
     public void delete(int id) {
         try {
             String sql = "DELETE FROM advertisements WHERE id = ?;";

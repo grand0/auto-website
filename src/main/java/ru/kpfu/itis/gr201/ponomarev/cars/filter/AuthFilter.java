@@ -1,6 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.filter;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.UserDao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.UserDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.User;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
 

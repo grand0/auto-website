@@ -1,8 +1,8 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.server;
 
 import org.json.JSONObject;
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.MakeDao;
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.ModelDao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.MakeDao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.ModelDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.Make;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.Model;
 

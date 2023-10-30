@@ -1,7 +1,7 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.dao.impl;
 
 import org.slf4j.LoggerFactory;
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.Dao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.UserDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.EmailAlreadyRegisteredException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.LoginAlreadyTakenException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
@@ -13,7 +13,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDao implements Dao<User> {
+public class UserDaoImpl implements UserDao {
 
     private final Connection connection = DatabaseConnectionUtil.getConnection();
 
@@ -74,6 +74,7 @@ public class UserDao implements Dao<User> {
         }
     }
 
+    @Override
     public User getByLoginAndPasswordHash(String login, String passwordHash) {
         try {
             String sql = "SELECT * FROM Users WHERE login = ?;";

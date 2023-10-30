@@ -1,6 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.dao.impl;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.Dao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.CarDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.*;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.DatabaseConnectionUtil;
@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarDao implements Dao<Car> {
+public class CarDaoImpl implements CarDao {
 
     private final Connection connection = DatabaseConnectionUtil.getConnection();
 
@@ -30,6 +30,7 @@ public class CarDao implements Dao<Car> {
         }
     }
 
+    @Override
     public Car getByCar(Car car) {
         try {
             String sql = "SELECT * FROM cars WHERE (model_id, body, transmission, engine, drive, engine_volume, year, horsepower, left_wheel) = (?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -73,19 +74,6 @@ public class CarDao implements Dao<Car> {
             if (generatedKeys.next()) {
                 car.setId(generatedKeys.getInt(1));
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void update(int id, Car car) throws SaveException {
-        try {
-            String sql = "UPDATE cars SET (model_id, body, transmission, engine, drive, engine_volume, year, horsepower, left_wheel) = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            setValuesOfStatement(statement, car);
-            statement.setInt(10, id);
-            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -1,7 +1,7 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.service.impl;
 
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.UserDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.UsersCarsDao;
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.UserDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.UserDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.UserNotAuthenticatedException;

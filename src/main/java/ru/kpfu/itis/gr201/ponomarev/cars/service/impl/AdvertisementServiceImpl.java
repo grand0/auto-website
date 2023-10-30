@@ -1,7 +1,7 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.service.impl;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.AdvertisementDao;
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.AdvertisementImagesDao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.AdvertisementDao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.AdvertisementImagesDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.AdvertisementDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.CarDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.UserDto;

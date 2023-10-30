@@ -1,6 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.dao.impl;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.Dao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.AdvertisementImagesDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.AdvertisementImage;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.DatabaseConnectionUtil;
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdvertisementImagesDao implements Dao<AdvertisementImage> {
+public class AdvertisementImagesDaoImpl implements AdvertisementImagesDao {
 
     private final Connection connection = DatabaseConnectionUtil.getConnection();
 
@@ -49,6 +49,7 @@ public class AdvertisementImagesDao implements Dao<AdvertisementImage> {
         }
     }
 
+    @Override
     public List<AdvertisementImage> getByAdvertisementId(int advertisementId) {
         try {
             String sql = "SELECT * FROM advertisement_images WHERE advertisement_id = ?;";
@@ -72,20 +73,6 @@ public class AdvertisementImagesDao implements Dao<AdvertisementImage> {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, advertisementImage.getAdvertisementId());
             statement.setString(2, advertisementImage.getImageUrl());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void update(int id, AdvertisementImage advertisementImage) throws SaveException {
-        try {
-            String sql = "UPDATE advertisement_images SET (advertisement_id, image_url) = (?, ?) WHERE id = ?;";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, advertisementImage.getAdvertisementId());
-            statement.setString(2, advertisementImage.getImageUrl());
-            statement.setInt(3, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

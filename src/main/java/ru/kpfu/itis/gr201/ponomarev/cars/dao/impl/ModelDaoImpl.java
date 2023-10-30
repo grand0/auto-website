@@ -1,6 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.dao.impl;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.Dao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.ModelDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.Model;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.DatabaseConnectionUtil;
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelDao implements Dao<Model> {
+public class ModelDaoImpl implements ModelDao {
 
     private final Connection connection = DatabaseConnectionUtil.getConnection();
 
@@ -33,6 +33,7 @@ public class ModelDao implements Dao<Model> {
         }
     }
 
+    @Override
     public Model getByMakeIdAndName(int makeId, String name) {
         try {
             String sql = "SELECT * FROM models WHERE make_id = ? AND model = ?;";
@@ -50,6 +51,7 @@ public class ModelDao implements Dao<Model> {
         }
     }
 
+    @Override
     public List<Model> search(String make, String query) {
         try {
             String sql = "SELECT models.id, make_id, model FROM models JOIN makes on models.make_id = makes.id WHERE (? IS NULL OR make = ?) AND (model ILIKE (? || '%'));";
@@ -91,20 +93,6 @@ public class ModelDao implements Dao<Model> {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, model.getMakeId());
             statement.setString(2, model.getModel());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void update(int id, Model model) throws SaveException {
-        try {
-            String sql = "UPDATE models SET (make_id, model) = (?, ?) WHERE id = ?;";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, model.getMakeId());
-            statement.setString(2, model.getModel());
-            statement.setInt(3, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -1,8 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.listener;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.BookmarksDao;
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.MessageDao;
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.UsersCarsDao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.*;
 import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.*;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.*;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.impl.*;
@@ -15,12 +13,12 @@ import javax.servlet.annotation.WebListener;
 public class ContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        UserDao userDao = new UserDao();
-        MakeDao makeDao = new MakeDao();
-        ModelDao modelDao = new ModelDao();
-        CarDao carDao = new CarDao();
-        AdvertisementDao advertisementDao = new AdvertisementDao();
-        AdvertisementImagesDao advertisementImagesDao = new AdvertisementImagesDao();
+        UserDao userDao = new UserDaoImpl();
+        MakeDao makeDao = new MakeDaoImpl();
+        ModelDao modelDao = new ModelDaoImpl();
+        CarDao carDao = new CarDaoImpl();
+        AdvertisementDao advertisementDao = new AdvertisementDaoImpl();
+        AdvertisementImagesDao advertisementImagesDao = new AdvertisementImagesDaoImpl();
         UsersCarsDao usersCarsDao = new UsersCarsDaoImpl();
         MessageDao messageDao = new MessageDaoImpl();
         BookmarksDao bookmarksDao = new BookmarksDaoImpl();

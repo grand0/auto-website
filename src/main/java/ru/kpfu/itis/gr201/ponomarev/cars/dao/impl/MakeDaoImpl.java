@@ -1,6 +1,6 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.dao.impl;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.Dao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.MakeDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.Make;
 import ru.kpfu.itis.gr201.ponomarev.cars.util.DatabaseConnectionUtil;
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MakeDao implements Dao<Make> {
+public class MakeDaoImpl implements MakeDao {
 
     private final Connection connection = DatabaseConnectionUtil.getConnection();
 
@@ -33,6 +33,7 @@ public class MakeDao implements Dao<Make> {
         }
     }
 
+    @Override
     public Make getByName(String name) {
         try {
             String sql = "SELECT * FROM makes WHERE make = ?;";
@@ -49,6 +50,7 @@ public class MakeDao implements Dao<Make> {
         }
     }
 
+    @Override
     public List<Make> search(String query) {
         try {
             String sql = "SELECT * FROM makes WHERE make ILIKE (? || '%');";
@@ -87,19 +89,6 @@ public class MakeDao implements Dao<Make> {
             String sql = "INSERT INTO makes values (DEFAULT, ?);";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, make.getMake());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void update(int id, Make make) throws SaveException {
-        try {
-            String sql = "UPDATE makes SET make = ? WHERE id = ?;";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, make.getMake());
-            statement.setInt(2, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

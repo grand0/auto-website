@@ -1,8 +1,8 @@
 package ru.kpfu.itis.gr201.ponomarev.cars.service.impl;
 
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.CarDao;
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.MakeDao;
-import ru.kpfu.itis.gr201.ponomarev.cars.dao.impl.ModelDao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.CarDao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.MakeDao;
+import ru.kpfu.itis.gr201.ponomarev.cars.dao.ModelDao;
 import ru.kpfu.itis.gr201.ponomarev.cars.dto.CarDto;
 import ru.kpfu.itis.gr201.ponomarev.cars.exception.SaveException;
 import ru.kpfu.itis.gr201.ponomarev.cars.model.Car;
