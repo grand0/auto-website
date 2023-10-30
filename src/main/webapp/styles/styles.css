@@ -44,15 +44,16 @@
 
 
 /* error */
-.status-code {
+#status-code {
     margin: 100px 0;
     font-size: 7rem;
     font-weight: bolder;
 
+    user-select: none;
+
     color: transparent;
     background-clip: text;
     background-image: url(https://media.giphy.com/media/3o7aCRBaUv3Sng0rTy/giphy.gif);
-    background-size: cover;
     background-position: center;
 }
 

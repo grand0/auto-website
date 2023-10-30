@@ -3,8 +3,34 @@
 <#macro title>Error</#macro>
 
 <#macro content>
+    <script>
+        const bgUrls = [
+            "https://media.giphy.com/media/5kFbMBOEdWjg1nItoG/giphy.gif",
+            "https://media.giphy.com/media/3o7aCRBaUv3Sng0rTy/giphy.gif",
+            "https://media.giphy.com/media/3og0IEmNX1j2AuplJK/giphy.gif",
+            "https://media.giphy.com/media/3oz8xF2tbONaIIy92M/giphy.gif",
+            "https://media.giphy.com/media/3Fpe0mIR5Y7MyCcxse/giphy.gif",
+            "https://media.giphy.com/media/l1J9zRn3SyIRsySti/giphy.gif",
+            "https://media.giphy.com/media/xUOxeQkDWcfWGiTevu/giphy.gif",
+            "https://media.giphy.com/media/aqS9Eew6JEvyL53pJE/giphy.gif",
+        ]
+
+        function changeStatusCodeBg() {
+            let index = Math.floor(Math.random() * bgUrls.length)
+            $("#status-code").css("background-image", "url(" + bgUrls[index] + ")")
+        }
+
+        $(document).ready(() => {
+            changeStatusCodeBg()
+            $("#status-code")
+                .on("click", () => {
+                    changeStatusCodeBg()
+                })
+        })
+    </script>
+
     <div class="container text-center">
-        <h1 class="status-code">${statusCode}</h1>
+        <h1 id="status-code">${statusCode}</h1>
         <h2 class="mb-3">
             <#if statusCode == 404>
                 Page not found
@@ -12,6 +38,13 @@
                 There was an error
             </#if>
         </h2>
+        <p>
+            <#if statusCode gte 500 && statusCode lt 600>
+                It's not you, it's me...
+            <#elseif statusCode == 404>
+                Whatever you were trying to find is not there...
+            </#if>
+        </p>
         <a id="error-home-btn" class="btn btn-primary" href="${contextPath}/">
             Take me outta here
         </a>
