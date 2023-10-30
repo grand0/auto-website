@@ -87,6 +87,8 @@
                                 </div>
                             </div>
                         </div>
+                    <#else>
+                        <p class="text-secondary">You don't have any advertisements</p>
                     </#list>
                 </div>
             </div>
@@ -165,6 +167,8 @@
                                 </div>
                             </div>
                         </a>
+                    <#else>
+                        <p class="text-secondary">You didn't send a message to any advertisement</p>
                     </#list>
                 </div>
             </div>

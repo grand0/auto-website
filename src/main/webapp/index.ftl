@@ -50,7 +50,7 @@
             </#list>
         </div>
 
-        <#if bookmarks??>
+        <#if bookmarks?? && bookmarks?has_content>
             <h2 class="mb-3">
                 <i class="bi bi-bookmark-star me-1"></i>
                 Bookmarked
