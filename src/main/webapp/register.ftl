@@ -268,5 +268,7 @@
             <span id="register-button-spinner" class="spinner-border spinner-border-sm" aria-hidden="true" hidden></span>
             <span id="register-button-text">Register</span>
         </button>
+
+        <p class="text-secondary"><i class="bi bi-lightbulb-fill"></i> Already have an account? <a href="${contextPath}/auth">Log in</a></p>
     </form>
 </#macro>

@@ -88,5 +88,7 @@
             <span id="log-in-button-spinner" class="spinner-border spinner-border-sm" aria-hidden="true" hidden></span>
             <span id="log-in-button-text">Log in</span>
         </button>
+
+        <p class="text-secondary"><i class="bi bi-lightbulb-fill"></i> Don't have an account? <a href="${contextPath}/register">Register</a></p>
     </form>
 </#macro>
