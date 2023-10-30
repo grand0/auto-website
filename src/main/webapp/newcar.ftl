@@ -3,6 +3,10 @@
 <#macro title>New car</#macro>
 
 <#macro content>
+    <script id="data" type="application/json">
+        { "contextPath": "${contextPath}" }
+    </script>
+    <script src="${contextPath}/scripts/make-model-hints.js"></script>
     <script>
         function isNumeric(str) {
             return !isNaN(str)
@@ -149,75 +153,6 @@
                         .removeClass("is-invalid")
                 }
             })
-
-            $("#make-input")
-                .on("focusin", function () {
-                    $("#make-hints-list").removeAttr("hidden")
-                })
-                .on("focusout", function () {
-                    setTimeout(() => $("#make-hints-list").attr("hidden", "true"), 300)
-                })
-                .on("input", function () {
-                    const makeHintsList = $("#make-hints-list")
-                    makeHintsList.empty()
-                    if ($(this).val().trim()) {
-                        $.get(
-                            "${contextPath}/hints",
-                            {
-                                "action": "getMakes",
-                                "query": $(this).val().trim()
-                            },
-                            function (response) {
-                                $.each(response.makes, function (index, make) {
-                                    const btn = $("<button></button>")
-                                        .attr("type", "button")
-                                        .addClass("list-group-item")
-                                        .addClass("list-group-item-action")
-                                        .text(make)
-                                        .on("click", function () {
-                                            $("#make-input").val(make)
-                                        })
-                                    makeHintsList.append(btn)
-                                })
-                            }
-                        )
-                    }
-                })
-
-            $("#model-input")
-                .on("focusin", function () {
-                    $("#model-hints-list").removeAttr("hidden")
-                })
-                .on("focusout", function () {
-                    setTimeout(() => $("#model-hints-list").attr("hidden", "true"), 300)
-                })
-                .on("input", function () {
-                    const modelHintsList = $("#model-hints-list")
-                    modelHintsList.empty()
-                    if ($(this).val().trim()) {
-                        $.get(
-                            "${contextPath}/hints",
-                            {
-                                "action": "getModels",
-                                "make": $("#make-input").val().trim(),
-                                "query": $(this).val().trim()
-                            },
-                            function (response) {
-                                $.each(response.models, function (index, model) {
-                                    const btn = $("<button></button>")
-                                        .attr("type", "button")
-                                        .addClass("list-group-item")
-                                        .addClass("list-group-item-action")
-                                        .text(model)
-                                        .on("click", function () {
-                                            $("#model-input").val(model)
-                                        })
-                                    modelHintsList.append(btn)
-                                })
-                            }
-                        )
-                    }
-                })
         })
     </script>
 
