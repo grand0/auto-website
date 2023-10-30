@@ -48,11 +48,11 @@
         <div class="collapse navbar-collapse" id="collapsingNavbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="${contextPath}/advertisements">Advertisements</a>
+                    <a class="nav-link" href="${contextPath}/advertisements">Ads</a>
                 </li>
                 <#if user??>
                     <li class="nav-item">
-                        <a class="nav-link" href="${contextPath}/advertisements/my">My advertisements</a>
+                        <a class="nav-link" href="${contextPath}/advertisements/my">My ads</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="${contextPath}/garage">Garage</a>
