@@ -31,7 +31,7 @@
             ${profile.email}
         </p>
 
-        <#if user.id == profile.id>
+        <#if user?? && user.id == profile.id>
             <div class="row justify-content-center mb-3">
                 <a href="${contextPath}/profile_edit" class="btn btn-outline-primary icon-link col-auto me-3">
                     <i class="bi bi-pencil"></i>
