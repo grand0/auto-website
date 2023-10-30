@@ -171,24 +171,27 @@
                     $("#photo-too-big-feedback").attr("hidden", "true")
                     $("#photo-unsupported-format-feedback").attr("hidden", "true")
                     $("#too-many-photos-feedback").removeAttr("hidden")
+                    return;
                 }
+
+                const photosInput = $(this)
                 $.each(files, function(index, f) {
                     if (f.size > 5 * 1024 * 1024) {
-                        $(this)
+                        photosInput
                             .val(null)
                             .addClass("is-invalid")
                         $("#photo-too-big-feedback").removeAttr("hidden")
                         $("#photo-unsupported-format-feedback").attr("hidden", "true")
                         $("#too-many-photos-feedback").attr("hidden", "true")
                     } else if (!f.type.endsWith("jpeg") && !f.type.endsWith("png")) {
-                        $(this)
+                        photosInput
                             .val(null)
                             .addClass("is-invalid")
                         $("#photo-too-big-feedback").attr("hidden", "true")
                         $("#photo-unsupported-format-feedback").removeAttr("hidden")
                         $("#too-many-photos-feedback").attr("hidden", "true")
                     } else {
-                        $(this).removeClass("is-invalid")
+                        photosInput.removeClass("is-invalid")
                         $("#photo-too-big-feedback").attr("hidden", "true")
                         $("#photo-unsupported-format-feedback").attr("hidden", "true")
                         $("#too-many-photos-feedback").attr("hidden", "true")
