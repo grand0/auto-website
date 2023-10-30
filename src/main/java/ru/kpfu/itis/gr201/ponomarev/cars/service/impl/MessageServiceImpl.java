@@ -41,9 +41,9 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageDto> readAllOfAdvertisementAndUser(int advertisementId, int userId) {
-        messageDao.setAllAsReadForAdvertisementAndRecipient(advertisementId, userId);
-        return messageDao.getAllOfAdvertisementAndUser(advertisementId, userId)
+    public List<MessageDto> readAllOfAdvertisementAndUser(int advertisementId, int userId, int recipientId) {
+        messageDao.setAllAsReadForAdvertisementAndRecipient(advertisementId, recipientId, userId);
+        return messageDao.getAllOfAdvertisementAndUser(advertisementId, userId, recipientId)
                 .stream()
                 .map(this::toMessageDto)
                 .collect(Collectors.toList());
@@ -78,10 +78,10 @@ public class MessageServiceImpl implements MessageService {
                                 (k, v) -> {
                                     if (v == null) {
                                         List<Integer> list = new ArrayList<>();
-                                        list.add(msg.getRecipientId());
+                                        list.add(msg.getSenderId());
                                         return list;
                                     } else {
-                                        v.add(msg.getRecipientId());
+                                        v.add(msg.getSenderId());
                                         return v;
                                     }
                                 }

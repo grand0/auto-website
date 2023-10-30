@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface MessageService {
     List<UserDto> getAllRecipientsOfAdvertisement(int advertisementId, int senderId);
-    List<MessageDto> readAllOfAdvertisementAndUser(int advertisementId, int senderId);
+    List<MessageDto> readAllOfAdvertisementAndUser(int advertisementId, int senderId, int recipientId);
     List<AdvertisementDto> getAllAdvertisementsToWhichUserSentMessage(int userId);
     List<Integer> getAdvertisementIdsWithUnreadMessages(int userId);
     Map<Integer, List<Integer>> getAdvertisementIdsAndSenderIdsWithUnreadMessages(int userId);

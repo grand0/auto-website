@@ -63,7 +63,7 @@
                                                         <span>${chatUser}</span>
                                                     </div>
                                                     <div class="d-flex align-items-center">
-                                                        <#if unreadMap[(ad.id)?c]?? && unreadMap[(ad.id)?c]?seq_contains(user.id)>
+                                                        <#if unreadMap[(ad.id)?c]?? && unreadMap[(ad.id)?c]?seq_contains(chatUser.id)>
                                                             <span class="p-2 bg-danger rounded-circle me-3"></span>
                                                         </#if>
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +148,7 @@
                                                     <span>${ad.seller}</span>
                                                 </div>
                                                 <div class="d-flex align-items-center">
-                                                    <#if unreadMap[(ad.id)?c]?? && unreadMap[(ad.id)?c]?seq_contains(user.id)>
+                                                    <#if unreadMap[(ad.id)?c]?? && unreadMap[(ad.id)?c]?seq_contains(ad.seller.id)>
                                                         <span class="p-2 bg-danger rounded-circle me-3"></span>
                                                     </#if>
                                                     <svg xmlns="http://www.w3.org/2000/svg"

@@ -50,7 +50,7 @@ public class ChatServlet extends HttpServlet {
                 resp.getWriter().write(jsonResponse.toString());
                 return;
             }
-            List<MessageDto> messages = messageService.readAllOfAdvertisementAndUser(adId, user.getId());
+            List<MessageDto> messages = messageService.readAllOfAdvertisementAndUser(adId, user.getId(), recipientId);
             jsonResponse.put("messages", messages);
             jsonResponse.put("recipientId", recipientId);
             resp.getWriter().write(jsonResponse.toString());
@@ -68,7 +68,7 @@ public class ChatServlet extends HttpServlet {
             AdvertisementService advertisementService = (AdvertisementService) getServletContext().getAttribute("advertisementService");
             AdvertisementDto advertisement = advertisementService.get(adId);
             UserDto recipient = userService.get(recipientId);
-            List<MessageDto> messages = messageService.readAllOfAdvertisementAndUser(adId, user.getId());
+            List<MessageDto> messages = messageService.readAllOfAdvertisementAndUser(adId, user.getId(), recipientId);
             req.setAttribute("ad", advertisement);
             req.setAttribute("recipient", recipient);
             req.setAttribute("messages", messages);

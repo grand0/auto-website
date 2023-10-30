@@ -49,13 +49,15 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public List<Message> getAllOfAdvertisementAndUser(int advertisementId, int userId) {
+    public List<Message> getAllOfAdvertisementAndUser(int advertisementId, int userId, int recipientId) {
         try {
-            String sql = "SELECT * FROM messages WHERE advertisement_id = ? AND (sender_id = ? OR recipient_id = ?) ORDER BY sent_ts DESC;";
+            String sql = "SELECT * FROM messages WHERE advertisement_id = ? AND ((sender_id = ? AND recipient_id = ?) OR (sender_id = ? AND recipient_id = ?)) ORDER BY sent_ts DESC;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, advertisementId);
             statement.setInt(2, userId);
-            statement.setInt(3, userId);
+            statement.setInt(3, recipientId);
+            statement.setInt(4, recipientId);
+            statement.setInt(5, userId);
             ResultSet set = statement.executeQuery();
             List<Message> messages = new ArrayList<>();
             while (set.next()) {
@@ -91,12 +93,13 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public void setAllAsReadForAdvertisementAndRecipient(int advertisementId, int recipientId) {
+    public void setAllAsReadForAdvertisementAndRecipient(int advertisementId, int senderId, int recipientId) {
         try {
-            String sql = "UPDATE messages SET is_read = true WHERE advertisement_id = ? AND recipient_id = ?;";
+            String sql = "UPDATE messages SET is_read = true WHERE advertisement_id = ? AND sender_id = ? AND recipient_id = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, advertisementId);
-            statement.setInt(2, recipientId);
+            statement.setInt(2, senderId);
+            statement.setInt(3, recipientId);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
