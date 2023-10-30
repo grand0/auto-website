@@ -54,7 +54,7 @@ public class UserDaoImpl implements UserDao {
     public void save(User user) throws SaveException {
         try {
             String sql = "INSERT INTO Users(first_name, last_name, email, avatar_url, login, password) VALUES (?, ?, ?, ?, ?, ?);";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getEmail());
@@ -62,6 +62,10 @@ public class UserDaoImpl implements UserDao {
             statement.setString(5, user.getLogin());
             statement.setString(6, user.getPassword());
             statement.executeUpdate();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                user.setId(generatedKeys.getInt(1));
+            }
         } catch (SQLException e) {
             if (e.getMessage().contains("email_unique")) {
                 throw new EmailAlreadyRegisteredException(user.getEmail());
