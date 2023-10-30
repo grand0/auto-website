@@ -218,11 +218,11 @@
                     </div>
                     <div class="col-md-3">
                         <label for="year-from-input" class="form-label">Year from</label>
-                        <input type="number" class="form-control" id="year-from-input" value="${filter.yearFrom!?c}">
+                        <input type="number" class="form-control" maxlength="4" id="year-from-input" value="${filter.yearFrom!?c}">
                     </div>
                     <div class="col-md-3">
                         <label for="year-to-input" class="form-label">Year to</label>
-                        <input type="number" class="form-control" id="year-to-input" value="${filter.yearTo!?c}">
+                        <input type="number" class="form-control" maxlength="4" id="year-to-input" value="${filter.yearTo!?c}">
                     </div>
                 </div>
                 <div class="row mb-3">

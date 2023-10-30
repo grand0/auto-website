@@ -23,6 +23,8 @@
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+    <!-- custom scripts and stylesheets -->
+    <script src="${contextPath}/scripts/input-restriction.js"></script>
     <link rel="stylesheet" href="${contextPath}/styles/styles.css">
 </head>
 <body>
