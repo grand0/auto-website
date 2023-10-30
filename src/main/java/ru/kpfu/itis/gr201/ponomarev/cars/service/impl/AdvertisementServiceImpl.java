@@ -11,6 +11,7 @@ import ru.kpfu.itis.gr201.ponomarev.cars.model.filter.AdvertisementFilter;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.AdvertisementService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.CarService;
 import ru.kpfu.itis.gr201.ponomarev.cars.service.UserService;
+import ru.kpfu.itis.gr201.ponomarev.cars.util.Constants;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,7 +64,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                 advertisement.getDescription(),
                 advertisement.getPrice(),
                 userDto,
-                advertisement.getPublicationTs(),
+                advertisement.getPublicationTs().toLocalDateTime().format(Constants.DATE_TIME_FORMATTER),
                 advertisement.getMileage(),
                 advertisement.getCarColor(),
                 advertisement.getCondition(),

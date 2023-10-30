@@ -2,7 +2,6 @@ package ru.kpfu.itis.gr201.ponomarev.cars.dto;
 
 import ru.kpfu.itis.gr201.ponomarev.cars.model.Condition;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,7 +11,7 @@ public class AdvertisementDto {
     private String description;
     private int price;
     private UserDto seller;
-    private Timestamp publicationTs;
+    private String publicationTs;
     private int mileage;
     private String carColor;
     private Condition condition;
@@ -21,7 +20,7 @@ public class AdvertisementDto {
     private int viewCount;
     private List<String> imagesUrls;
 
-    public AdvertisementDto(int id, CarDto car, String description, int price, UserDto seller, Timestamp publicationTs, int mileage, String carColor, Condition condition, int owners, boolean exchangeAllowed, int viewCount, List<String> imagesUrls) {
+    public AdvertisementDto(int id, CarDto car, String description, int price, UserDto seller, String publicationTs, int mileage, String carColor, Condition condition, int owners, boolean exchangeAllowed, int viewCount, List<String> imagesUrls) {
         this.id = id;
         this.car = car;
         this.description = description;
@@ -77,11 +76,11 @@ public class AdvertisementDto {
         this.seller = seller;
     }
 
-    public Timestamp getPublicationTs() {
+    public String getPublicationTs() {
         return publicationTs;
     }
 
-    public void setPublicationTs(Timestamp publicationTs) {
+    public void setPublicationTs(String publicationTs) {
         this.publicationTs = publicationTs;
     }
 
@@ -146,7 +145,7 @@ public class AdvertisementDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AdvertisementDto that = (AdvertisementDto) o;
-        return getId() == that.getId() && getPrice() == that.getPrice() && getMileage() == that.getMileage() && getOwners() == that.getOwners() && isExchangeAllowed() == that.isExchangeAllowed() && getViewCount() == that.getViewCount() && Objects.equals(getCar(), that.getCar()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getSeller(), that.getSeller()) && Objects.equals(getPublicationTs(), that.getPublicationTs()) && Objects.equals(getCarColor(), that.getCarColor()) && Objects.equals(getCondition(), that.getCondition()) && Objects.equals(getImagesUrls(), that.getImagesUrls());
+        return getId() == that.getId() && getPrice() == that.getPrice() && getMileage() == that.getMileage() && getOwners() == that.getOwners() && isExchangeAllowed() == that.isExchangeAllowed() && getViewCount() == that.getViewCount() && Objects.equals(getCar(), that.getCar()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getSeller(), that.getSeller()) && Objects.equals(getPublicationTs(), that.getPublicationTs()) && Objects.equals(getCarColor(), that.getCarColor()) && getCondition() == that.getCondition() && Objects.equals(getImagesUrls(), that.getImagesUrls());
     }
 
     @Override
