@@ -27,7 +27,7 @@
 
 /* chat */
 .message {
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
     padding: 12px;
     border-radius: 0.375rem;
     width: fit-content;
